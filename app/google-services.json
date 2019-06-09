@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "351894913553",
+    "firebase_url": "https://opipis-6fa89.firebaseio.com",
+    "project_id": "opipis-6fa89",
+    "storage_bucket": "opipis-6fa89.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351894913553:android:daafe70c6315890f",
+        "android_client_info": {
+          "package_name": "com.lidorttol.opipis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "351894913553-4k00f7vupvqub93t4495cta2a2e56tfq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lidorttol.opipis",
+            "certificate_hash": "925271e5b7a6d6274770d43b0d07a4f5658fd11f"
+          }
+        },
+        {
+          "client_id": "351894913553-saibtg2b3rk485queanote3584bqee1e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIaIm_7Xaat0ihwY8H1W6R_y0xfy_dKAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "351894913553-saibtg2b3rk485queanote3584bqee1e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

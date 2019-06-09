@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Opipis</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="mapTitle">Mapa</string>
+    <string name="profileTitle">Perfil</string>
+    <string name="closeSesion">Cerrar sesión</string>
+    <string name="title_drawer_header">Opipis</string>
+    <string name="title_first_time">Opipis</string>
+    <string name="title_activity_maps">Map</string>
+</resources>
