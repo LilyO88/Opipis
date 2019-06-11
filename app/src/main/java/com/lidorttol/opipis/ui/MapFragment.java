@@ -1,13 +1,24 @@
 package com.lidorttol.opipis.ui;
 
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -15,25 +26,45 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.lidorttol.opipis.R;
+
+import java.io.IOException;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     MapView mMapView;
-    private GoogleMap googleMap;
+    private GoogleMap mGoogleMap;
+    View rootView;
 
     public MapFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_map, container, false);
+        return inflater.inflate(R.layout.fragment_map, container, false);
+//        rootView = inflater.inflate(R.layout.fragment_map, container, false);
+//        return rootView;
+    }
 
-        mMapView = rootView.findViewById(R.id.map);
-        mMapView.onCreate(savedInstanceState);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        mMapView.onResume(); // Necesario para obtener el mapa para mostrar inmediatamente
+        mMapView = ViewCompat.requireViewById(requireView(), R.id.map);
+//        mMapView = rootView.findViewById(R.id.map);
+        if(mMapView != null) {
+            mMapView.onCreate(savedInstanceState);
+            mMapView.onResume(); // Necesario para obtener el mapa para mostrar inmediatamente
+
+            mMapView.getMapAsync(this);
+        }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mGoogleMap = googleMap;
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -41,27 +72,52 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             e.printStackTrace();
         }
 
-        mMapView.getMapAsync(this);
-
-        return rootView;
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap2) {
-        googleMap = googleMap2;
+//        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         //  Para soltar un marcador en un punto del mapa
         LatLng latLng = new LatLng(36.679582, -5.444791);
         LatLng latLng2 = new LatLng(36.6, -5.4);
-        googleMap.addMarker(new MarkerOptions().position(latLng).title("Marker Title").snippet("Marker Description"));
-        googleMap.addMarker(new MarkerOptions().position(latLng2).title("Marker Title").snippet("Marker Description"));
+        mGoogleMap.addMarker(new MarkerOptions().position(latLng).title("Ubrique").snippet("Ubicación de Ubrique"));
+        mGoogleMap.addMarker(new MarkerOptions().position(latLng2).title("Otro sitio").snippet("Ubicación inventada"));
+
+
+        //Para sacar la dirección
+        Geocoder geocoder = new Geocoder(getContext());
+        String cadena = "";
+        try {
+            cadena = geocoder.getFromLocation(latLng.latitude, latLng.longitude,1).get(0).getAddressLine(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        TextView mkl = ViewCompat.requireViewById(requireView(), R.id.txtDirection);
+        ConstraintLayout cl = ViewCompat.requireViewById(requireView(), R.id.cl_window_map);
+
+        cl.setVisibility(View.VISIBLE);
+        mkl.setText(cadena);
+
+        RatingBar rat = ViewCompat.requireViewById(requireView(), R.id.cal_bath);
+        rat.setRating(3.5f);
 
         //Para hacer zoom automáticamente a la ubicación del marcador.
         CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(12).build();
-        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+
+        
+
+
+        //Recoger las coordenadas de donde clicas en el mapa
+        mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+            }
+        });
 
         //Para agregar los botones de zoom
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
+        mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
+        mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
     }
 
 

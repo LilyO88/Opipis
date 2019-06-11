@@ -9,4 +9,6 @@
     <string name="title_drawer_header">Opipis</string>
     <string name="title_first_time">Opipis</string>
     <string name="title_activity_maps">Map</string>
+    <string name="ver_mas">Ver más...</string>
+    <string name="direccion">Dirección</string>
 </resources>
