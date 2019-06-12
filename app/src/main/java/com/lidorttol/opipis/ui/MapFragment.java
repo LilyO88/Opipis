@@ -1,7 +1,6 @@
 package com.lidorttol.opipis.ui;
 
 import android.location.Geocoder;
-import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,16 +8,18 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -28,15 +29,25 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.lidorttol.opipis.R;
+import com.lidorttol.opipis.data.Banio;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     MapView mMapView;
     private GoogleMap mGoogleMap;
-    View rootView;
+    FirebaseFirestore database;
+    NavController navController;
+//    DatabaseReference database;
+//    View rootView;
 
     public MapFragment() {
     }
@@ -51,15 +62,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setupViews();
 
-        mMapView = ViewCompat.requireViewById(requireView(), R.id.map);
-//        mMapView = rootView.findViewById(R.id.map);
+        //        mMapView = rootView.findViewById(R.id.map);
         if(mMapView != null) {
             mMapView.onCreate(savedInstanceState);
             mMapView.onResume(); // Necesario para obtener el mapa para mostrar inmediatamente
 
             mMapView.getMapAsync(this);
         }
+    }
+
+    private void setupViews() {
+        mMapView = ViewCompat.requireViewById(requireView(), R.id.map);
+        database = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -74,38 +90,40 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 //        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        //  Para soltar un marcador en un punto del mapa
-        LatLng latLng = new LatLng(36.679582, -5.444791);
-        LatLng latLng2 = new LatLng(36.6, -5.4);
-        mGoogleMap.addMarker(new MarkerOptions().position(latLng).title("Ubrique").snippet("Ubicación de Ubrique"));
-        mGoogleMap.addMarker(new MarkerOptions().position(latLng2).title("Otro sitio").snippet("Ubicación inventada"));
+        //
+        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                marker.getTag();
+                database.collection("banios").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Banio banio = null;
+
+                            for (QueryDocumentSnapshot document: task.getResult()) {
+                                //Log.d("", document.getId() + " => " + document.getData());
+                                if(document.getId().equals(marker.getTag())) {
+                                    banio = document.toObject(Banio.class);
+                                    showWindow(banio);
+                                }
+                            }
+                        } else {
+                            Log.w("", "Error getting documents.", task.getException());
+                            Toast.makeText(getContext(), "Ha habido un error al recuperar las localizaiones.", Toast.LENGTH_LONG);
+                        }
+                    }
+                });
+                return false;
+            }
+        });
+
+        readDatabase();
 
 
-        //Para sacar la dirección
-        Geocoder geocoder = new Geocoder(getContext());
-        String cadena = "";
-        try {
-            cadena = geocoder.getFromLocation(latLng.latitude, latLng.longitude,1).get(0).getAddressLine(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        TextView mkl = ViewCompat.requireViewById(requireView(), R.id.txtDirection);
-        ConstraintLayout cl = ViewCompat.requireViewById(requireView(), R.id.cl_window_map);
-
-        cl.setVisibility(View.VISIBLE);
-        mkl.setText(cadena);
-
-        RatingBar rat = ViewCompat.requireViewById(requireView(), R.id.cal_bath);
-        rat.setRating(3.5f);
-
-        //Para hacer zoom automáticamente a la ubicación del marcador.
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(12).build();
-        mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-
-        
-
+        //Para agregar los botones de zoom
+        mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
+        mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
         //Recoger las coordenadas de donde clicas en el mapa
         mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -114,15 +132,59 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
             }
         });
-
-        //Para agregar los botones de zoom
-        mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
-        mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
     }
 
 
 
+    private void showWindow(Banio banio) {
+        TextView txtVerMas = ViewCompat.requireViewById(requireView(), R.id.txtVerMas);
+        TextView txtDirection = ViewCompat.requireViewById(requireView(), R.id.txtDirection);
+        ConstraintLayout cl_window = ViewCompat.requireViewById(requireView(), R.id.cl_window_map);
 
+        cl_window.setVisibility(View.VISIBLE);
+        txtDirection.setText(banio.getDireccion());
+        RatingBar rat = ViewCompat.requireViewById(requireView(), R.id.cal_bath);
+        rat.setRating((float)banio.getPuntuacion());
+
+        txtVerMas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController = NavHostFragment.findNavController(MapFragment.this);
+                navController.navigate(R.id.action_splashFragment_to_mapFragment); //CAMBIAR EL DESTINO Y AÑADIR EL PARÁMETRO DE ID DEL BAÑO A MOSTRAR
+                Toast.makeText(getContext(), "Hay internet.", Toast.LENGTH_LONG);
+            }
+        });
+    }
+
+
+    private void readDatabase() {
+        database.collection("banios").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    LatLng latLng = null;
+//                    HashMap markers = new HashMap();
+//                    Marker marker;
+                    for (QueryDocumentSnapshot document: task.getResult()) {
+                        //Log.d("", document.getId() + " => " + document.getData());
+
+                        Banio banio = document.toObject(Banio.class);
+                        latLng = new LatLng(banio.getLatitud(), banio.getLongitud());
+                        mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(banio.getDireccion())).setTag(banio.getId_banio());
+                        /*marker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(banio.getDireccion()));
+                        markers.put(banio.getId_banio(), marker);*/
+                    }
+                    //Para hacer zoom automáticamente a la ubicación del marcador.
+                    CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(15).build();
+                    mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                } else {
+                    Log.w("", "Error getting documents.", task.getException());
+                    Toast.makeText(getContext(), "Ha habido un error al recuperar las localizaiones.", Toast.LENGTH_LONG);
+                }
+            }
+        });
+
+    }
 
 
 
@@ -174,4 +236,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Otras configuraciones pueden realizarse a través de UiSettings
         // UiSettings settings = getMap().getUiSettings();
     }*/
+
+
+    /*
+    *
+    *  Geocoder geocoder = new Geocoder(getContext());
+        String cadena = "";
+        try {
+            cadena = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1).get(0).toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        TextView mkl = ViewCompat.requireViewById(requireView(), R.id.txtDirection);
+        ConstraintLayout cl = ViewCompat.requireViewById(requireView(), R.id.cl_window_map);
+
+        cl.setVisibility(View.VISIBLE);
+        mkl.setText(cadena);
+
+        RatingBar rat = ViewCompat.requireViewById(requireView(), R.id.cal_bath);
+        rat.setRating(3.5f);*/
 }

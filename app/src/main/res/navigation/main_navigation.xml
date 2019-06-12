@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/mapFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/detailFragment"
@@ -58,4 +58,15 @@
         android:name="com.lidorttol.opipis.ui.OpinionFragment"
         android:label="fragment_opinion"
         tools:layout="@layout/fragment_opinion" />
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.lidorttol.opipis.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splashFragment_to_mapFragment"
+            app:destination="@id/mapFragment"
+            app:popUpTo="@+id/mapFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>
