@@ -10,7 +10,7 @@
             android:title="@string/mapTitle"/>
         <item
             android:id="@+id/profileFragment"
-            android:title="@string/profileTitle" />
+            android:title="@string/profileTitle"/>
     </group>
     <group
         android:checkableBehavior="single">

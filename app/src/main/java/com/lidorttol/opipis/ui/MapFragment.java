@@ -3,6 +3,7 @@ package com.lidorttol.opipis.ui;
 import android.location.Geocoder;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -51,6 +52,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     public MapFragment() {
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -140,17 +142,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         TextView txtVerMas = ViewCompat.requireViewById(requireView(), R.id.txtVerMas);
         TextView txtDirection = ViewCompat.requireViewById(requireView(), R.id.txtDirection);
         ConstraintLayout cl_window = ViewCompat.requireViewById(requireView(), R.id.cl_window_map);
+        RatingBar rat = ViewCompat.requireViewById(requireView(), R.id.cal_bath);
 
         cl_window.setVisibility(View.VISIBLE);
         txtDirection.setText(banio.getDireccion());
-        RatingBar rat = ViewCompat.requireViewById(requireView(), R.id.cal_bath);
         rat.setRating((float)banio.getPuntuacion());
 
         txtVerMas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 navController = NavHostFragment.findNavController(MapFragment.this);
-                navController.navigate(R.id.action_splashFragment_to_mapFragment); //CAMBIAR EL DESTINO Y AÑADIR EL PARÁMETRO DE ID DEL BAÑO A MOSTRAR
+                navController.navigate(R.id.action_mapFragment_to_detailFragment); //CAMBIAR EL DESTINO Y AÑADIR EL PARÁMETRO DE ID DEL BAÑO A MOSTRAR
                 Toast.makeText(getContext(), "Hay internet.", Toast.LENGTH_LONG);
             }
         });
