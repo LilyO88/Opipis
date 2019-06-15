@@ -1,12 +1,17 @@
 package com.lidorttol.opipis.ui;
 
-import android.location.Geocoder;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -16,7 +21,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,22 +41,33 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.lidorttol.opipis.R;
 import com.lidorttol.opipis.data.Banio;
-
-import java.io.IOException;
-import java.util.HashMap;
+import com.lidorttol.opipis.ui.main.MainActivityViewModel;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
+
+    private static final int RQ_PERMISOS = 1;
+    private static final String[] PERMISOS = {
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+    };
 
     MapView mMapView;
     private GoogleMap mGoogleMap;
     FirebaseFirestore database;
     NavController navController;
-//    DatabaseReference database;
-//    View rootView;
+    MainActivityViewModel viewModelMainActivity;
+    Banio banios;
+    private CameraPosition cameraPosition;
+    private boolean connected;
+    //    View rootView;
 
     public MapFragment() {
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,19 +81,88 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState);
         setupViews();
 
-        //        mMapView = rootView.findViewById(R.id.map);
-        if(mMapView != null) {
+        if (mMapView != null) {
             mMapView.onCreate(savedInstanceState);
             mMapView.onResume(); // Necesario para obtener el mapa para mostrar inmediatamente
 
             mMapView.getMapAsync(this);
         }
+
+        //Solicitud de permiso de localización
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            MapFragment.this.requestPermissions(PERMISOS, RQ_PERMISOS);
+        }
     }
 
     private void setupViews() {
         mMapView = ViewCompat.requireViewById(requireView(), R.id.map);
+        viewModelMainActivity = new MainActivityViewModel(getActivity().getApplication());
         database = FirebaseFirestore.getInstance();
+
+        //Innicializar el objeto, sino lo considera nulo
+        LatLng sanroque = new LatLng(36.210135, 5.393580);
+        cameraPosition = new CameraPosition.Builder().target(sanroque).zoom(15).build();
+
+        try {
+            viewModelMainActivity.getConnected().observe(getViewLifecycleOwner(), connectedO -> {
+                connected = connectedO;
+            });
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case RQ_PERMISOS: {
+                // Si se cancela la petición, el array de resultado estará vacío.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                        grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED ) {
+                    //Permiso de localización concedido
+//                    viewModelMainActivity.setLocation_ok(true);
+                    getCurrentLocation();
+                    mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                }
+            }
+        }
+    }
+
+    private void getCurrentLocation() {
+        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            //Obtener la ubicación actual
+            LocationManager locationManager = (LocationManager) getActivity().getSystemService(getContext().LOCATION_SERVICE);
+            LocationListener locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) { }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) { }
+            };
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 500, locationListener);
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            LatLng latLngActual = new LatLng(location.getLatitude(), location.getLongitude());
+            cameraPosition = new CameraPosition.Builder().target(latLngActual).zoom(15).build();
+        }
+    }
+
+ /*   private void getCurrentLocation() {
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(getContext().LOCATION_SERVICE);
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Location loca = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            LatLng latLngActual = new LatLng(loca.getLatitude(), loca.getLongitude());
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(latLngActual).zoom(14).build();
+            mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        }
+    }*/
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -89,10 +173,33 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if(connected) {
+            recoverBaths();
+            setupMarkersListener();
+            //readDatabase();
+        } else {
+            //Mostrar diálogo de reintentar conexión
+        }
 
-//        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        //Para agregar los botones de zoom y ubicación
+        mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
+        mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-        //
+        //Listener en el mapa
+        setupListenerMap();
+    }
+
+    private void setupListenerMap() {
+/*        //Recoger las coordenadas de donde clicas en el mapa
+        mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+            }
+        });*/
+    }
+
+    private void setupMarkersListener() {
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -111,7 +218,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 }
                             }
                         } else {
-                            Log.w("", "Error getting documents.", task.getException());
+                            Log.d("", "Error getting documents.", task.getException());
                             Toast.makeText(getContext(), "Ha habido un error al recuperar las localizaiones.", Toast.LENGTH_LONG);
                         }
                     }
@@ -119,23 +226,50 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 return false;
             }
         });
-
-        readDatabase();
-
-
-        //Para agregar los botones de zoom
-        mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
-        mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
-
-        //Recoger las coordenadas de donde clicas en el mapa
-        mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-
-            }
-        });
     }
 
+/*    private void setupMap() {
+        database.collection("banios").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    LatLng latLng = null;
+
+                    for (QueryDocumentSnapshot document: task.getResult()) {
+                        //Log.d("", document.getId() + " => " + document.getData());
+                        Banio banio = document.toObject(Banio.class);
+                        latLng = new LatLng(banio.getLatitud(), banio.getLongitud());
+                        mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(banio.getDireccion())).setTag(banio.getId_banio());
+                    }
+                    if(permissionLocation == PackageManager.PERMISSION_GRANTED) {
+                        getCurrentLocation();
+                    } else {
+                        //Para hacer zoom automáticamente a la ubicación del último marcador.
+                        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(15).build();
+                        mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    }
+                } else {
+                    Log.d("", "Error getting documents.", task.getException());
+                    Toast.makeText(getContext(), "Ha habido un error al recuperar las localizaiones.", Toast.LENGTH_LONG);
+                }
+            }
+        });
+    }*/
+
+/*
+    private void setupMarkers(List<Banio> banios) {
+        LatLng latLng = null;
+
+        for (Banio banio: banios) {
+            //Log.d("", document.getId() + " => " + document.getData());
+            latLng = new LatLng(banio.getLatitud(), banio.getLongitud());
+            mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(banio.getDireccion())).setTag(banio.getId_banio());
+        }
+        //Para hacer zoom automáticamente a la ubicación del marcador.
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(15).build();
+        mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    }
+*/
 
 
     private void showWindow(Banio banio) {
@@ -151,15 +285,61 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         txtVerMas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle arguments = new Bundle();
+                arguments.putString("id_banio", banio.getId_banio());
                 navController = NavHostFragment.findNavController(MapFragment.this);
-                navController.navigate(R.id.action_mapFragment_to_detailFragment); //CAMBIAR EL DESTINO Y AÑADIR EL PARÁMETRO DE ID DEL BAÑO A MOSTRAR
-                Toast.makeText(getContext(), "Hay internet.", Toast.LENGTH_LONG);
+                navController.navigate(R.id.action_mapFragment_to_detailFragment, arguments); //CAMBIAR EL DESTINO Y AÑADIR EL PARÁMETRO DE ID DEL BAÑO A MOSTRAR
+//                Toast.makeText(getContext(), "Hay internet.", Toast.LENGTH_LONG);
             }
         });
     }
 
+    private void recoverBaths() {
+        database.collection("banios").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    LatLng latLng = null;
+//                    HashMap markers = new HashMap();
+//                    Marker marker;
+                    for (QueryDocumentSnapshot document: task.getResult()) {
+                        //Log.d("", document.getId() + " => " + document.getData());
+                        Banio banio = document.toObject(Banio.class);
+                        latLng = new LatLng(banio.getLatitud(), banio.getLongitud());
+                        mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(banio.getDireccion())).setTag(banio.getId_banio());
+                    }
 
-    private void readDatabase() {
+                    if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        getCurrentLocation();
+                    } else {
+                        //Para hacer zoom automáticamente a la ubicación del último marcador.
+                        cameraPosition = new CameraPosition.Builder().target(latLng).zoom(15).build();
+                    }
+                    mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                } else {
+                    Log.d("", "Error getting documents.", task.getException());
+                    Toast.makeText(getContext(), "Ha habido un error al recuperar las localizaiones.", Toast.LENGTH_LONG);
+                }
+            }
+        });
+
+
+    }
+
+/*    private boolean isConnected() {
+        boolean connected = false;
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            // Si hay conexión a Internet en este momento
+            connected = true;
+        }
+        return connected;
+    }*/
+
+    /*private void readDatabase() {
         database.collection("banios").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -173,8 +353,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         Banio banio = document.toObject(Banio.class);
                         latLng = new LatLng(banio.getLatitud(), banio.getLongitud());
                         mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(banio.getDireccion())).setTag(banio.getId_banio());
-                        /*marker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(banio.getDireccion()));
-                        markers.put(banio.getId_banio(), marker);*/
+                        *//*marker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(banio.getDireccion()));
+                        markers.put(banio.getId_banio(), marker);*//*
                     }
                     //Para hacer zoom automáticamente a la ubicación del marcador.
                     CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(15).build();
@@ -187,7 +367,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         });
 
     }
-
+*/
 
 
 /*   @Override

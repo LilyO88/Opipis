@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_detailFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <argument
+            android:name="id_banio"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"

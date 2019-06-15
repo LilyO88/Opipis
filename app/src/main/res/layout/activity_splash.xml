@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="144dp"
         android:layout_marginEnd="24dp"
         android:background="@color/white"
         android:src="@drawable/logo_completo_r"
@@ -38,7 +38,7 @@
         app:layout_constraintTop_toBottomOf="@+id/logo" />
 
     <Button
-        android:id="@+id/exitApp"
+        android:id="@+id/btnRetry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -49,7 +49,7 @@
         android:paddingTop="10sp"
         android:paddingRight="25sp"
         android:paddingBottom="10sp"
-        android:text="@string/exit"
+        android:text="REINTENTAR"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/white"
         android:textSize="30sp"
