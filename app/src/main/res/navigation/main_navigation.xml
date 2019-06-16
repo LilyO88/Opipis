@@ -37,6 +37,9 @@
         <action
             android:id="@+id/action_mapFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_addBathFragment"
+            app:destination="@id/addBathFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -61,4 +64,9 @@
         android:name="com.lidorttol.opipis.ui.OpinionFragment"
         android:label="fragment_opinion"
         tools:layout="@layout/fragment_opinion" />
+    <fragment
+        android:id="@+id/addBathFragment"
+        android:name="com.lidorttol.opipis.ui.AddBathFragment"
+        android:label="fragment_add_bath"
+        tools:layout="@layout/fragment_add_bath" />
 </navigation>

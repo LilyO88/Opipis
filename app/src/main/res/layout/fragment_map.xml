@@ -25,7 +25,27 @@
         map:layout_constraintTop_toTopOf="parent">
     </com.google.android.gms.maps.MapView>
 
-<!--    <SearchView
+    <TextView
+        android:id="@+id/map_lblDireccion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="#FFFFFF"
+        android:paddingLeft="@dimen/margin8dp"
+        android:paddingTop="3dp"
+        android:paddingRight="@dimen/margin8dp"
+        android:paddingBottom="3dp"
+        android:text="@string/direccion"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toTopOf="parent" />
+
+    <!--    <SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,6 +69,20 @@
         map:layout_constraintTop_toTopOf="@+id/map" />
 -->
 
+
+    <Button
+        android:id="@+id/btnAniadirBanio"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Añadir nuevo baño"
+        android:visibility="invisible"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_window_map"
@@ -117,6 +151,7 @@
             map:layout_constraintStart_toStartOf="@+id/cal_bath"
             map:layout_constraintTop_toBottomOf="@+id/txtVerMas" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
