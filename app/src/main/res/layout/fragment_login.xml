@@ -10,7 +10,7 @@
     tools:context=".ui.LoginFragment">
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/login_logo"
         android:layout_width="126dp"
         android:layout_height="164dp"
         android:layout_marginStart="8dp"
@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/lbl_email"
+        android:id="@+id/login_lblEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
@@ -32,10 +32,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.026"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toBottomOf="@+id/login_logo" />
 
     <EditText
-        android:id="@+id/txt_email"
+        android:id="@+id/login_txtEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -46,10 +46,10 @@
         android:textColorHint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lbl_email" />
+        app:layout_constraintTop_toBottomOf="@+id/login_lblEmail" />
 
     <TextView
-        android:id="@+id/lbl_contrasenia"
+        android:id="@+id/login_lblPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -58,10 +58,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.036"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_email" />
+        app:layout_constraintTop_toBottomOf="@+id/login_txtEmail" />
 
     <EditText
-        android:id="@+id/txt_contrasenia"
+        android:id="@+id/login_txtPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -70,10 +70,10 @@
         android:hint="Introduza contraseña"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lbl_contrasenia" />
+        app:layout_constraintTop_toBottomOf="@+id/login_lblPassword" />
 
     <Button
-        android:id="@+id/btn_login"
+        android:id="@+id/login_btnLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -87,7 +87,7 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_contrasenia" />
+        app:layout_constraintTop_toBottomOf="@+id/login_txtPassword" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

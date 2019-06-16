@@ -1,6 +1,7 @@
 package com.lidorttol.opipis.ui;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Geocoder;
 import android.location.Location;
@@ -38,22 +39,30 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.lidorttol.opipis.R;
+import com.lidorttol.opipis.base.YesNoDialogFragment;
 import com.lidorttol.opipis.data.Banio;
 import com.lidorttol.opipis.ui.main.MainActivityViewModel;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDialogFragment.Listener{
 
     private static final int RQ_PERMISOS = 1;
     private static final String[] PERMISOS = {
             Manifest.permission.ACCESS_FINE_LOCATION
     };
+    private static final String TAG_DIALOG_FRAGMENT = "TAG_DIALOG_FRAGMENT";
+    private static final int RC_DIALOG_FRAGMENT = 1;
 
     private MapView mMapView;
     private GoogleMap mGoogleMap;
@@ -62,14 +71,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private MainActivityViewModel viewModelMainActivity;
     private CameraPosition cameraPosition;
     private boolean connected;
-    private Button btnAniadirBanio;
+    private Button btnAddNewBath;
     private TextView map_lblDireccion;
     private Marker marker;
-    private TextView txtVerMas;
-    private TextView txtDirection;
+    private TextView lblMore;
+    private TextView lblDirection;
     private ConstraintLayout cl_window;
-    private RatingBar rat;
+    private RatingBar ratBath;
     private LatLng sanroque;
+    private LatLng locationClickMap;
+    private String lastID;
+
     //    View rootView;
 
     public MapFragment() {
@@ -109,12 +121,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMapView = ViewCompat.requireViewById(requireView(), R.id.map);
         viewModelMainActivity = new MainActivityViewModel(getActivity().getApplication());
         database = FirebaseFirestore.getInstance();
-        btnAniadirBanio = ViewCompat.requireViewById(getView(), R.id.btnAniadirBanio);
+        btnAddNewBath = ViewCompat.requireViewById(getView(), R.id.map_btnAddBath);
         map_lblDireccion = ViewCompat.requireViewById(getView(), R.id.map_lblDireccion);
-        txtVerMas = ViewCompat.requireViewById(requireView(), R.id.txtVerMas);
-        txtDirection = ViewCompat.requireViewById(requireView(), R.id.txtDirection);
+        lblMore = ViewCompat.requireViewById(requireView(), R.id.wind_lblMore);
+        lblDirection = ViewCompat.requireViewById(requireView(), R.id.wind_lblDirection);
         cl_window = ViewCompat.requireViewById(requireView(), R.id.cl_window_map);
-        rat = ViewCompat.requireViewById(requireView(), R.id.cal_bath);
+        ratBath = ViewCompat.requireViewById(requireView(), R.id.wind_ratBath);
 
         navController = NavHostFragment.findNavController(MapFragment.this);
 
@@ -130,7 +142,78 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             e.printStackTrace();
         }
 
-        btnAniadirBanio.setOnClickListener(v -> navController.navigate(R.id.addBathFragment));
+        btnAddNewBath.setOnClickListener(v -> {
+            showConfirmationDialog();
+        });
+    }
+
+    //Configuración del cuadro de diálogo
+    private void showConfirmationDialog() {
+        YesNoDialogFragment dialogFragment = YesNoDialogFragment.newInstance(
+                "Registrar nuevo baño",
+                "¿Estás seguro de que quieres agregar un nuevo baño en el lugar indicado? " +
+                        "En caso afirmativo, a continuación deberá dejar la primera opinión.", "Aceptar",
+                "Cancelar", this, RC_DIALOG_FRAGMENT);
+        dialogFragment.show(this.getFragmentManager(), TAG_DIALOG_FRAGMENT);
+    }
+
+    //Implementados los métodos de YESNODIALOG
+    @Override
+    public void onPositiveButtonClick(DialogInterface dialog) {
+        database.collection("banios").get().addOnCompleteListener(task -> {
+            int last = -1;
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    if(Integer.parseInt(document.getId()) > last) {
+                        last = Integer.parseInt(document.getId());
+                    }
+                }
+                lastID = String.valueOf(last + 1);
+            } else {
+                Log.d("", "Error getting documents.", task.getException());
+            }
+        });
+        Geocoder geocoder = new Geocoder(getContext());
+        String direccion = "";
+        try {
+            direccion = geocoder.getFromLocation(locationClickMap.latitude, locationClickMap.longitude, 1).get(0).getAddressLine(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        Banio newBath = new Banio(lastID, direccion, locationClickMap.latitude, locationClickMap.longitude, 0);
+        Map<String, Object> newBath = new HashMap<>();
+        newBath.put("id_banio", lastID);
+        newBath.put("direccion", direccion);
+        newBath.put("latitud", locationClickMap.latitude);
+        newBath.put("longitud", locationClickMap.longitude);
+        newBath.put("puntuacion", 0);
+//        database.collection("banios").document(lastID).set(newBath);
+        database.collection("banios").document(lastID).set(newBath).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("", "DocumentSnapshot successfully written!");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("", "Error writing document", e);
+            }
+        });
+
+
+        Bundle arguments = new Bundle();
+        arguments.putString("new_bath", lastID);
+        navController.navigate(R.id.action_mapFragment_to_opinionFragment, arguments);
+    }
+
+    @Override
+    public void onNegativeButtonClick(DialogInterface dialog) {
+        dialog.dismiss();
+        if(marker != null) {
+            marker.remove();
+        }
+        btnAddNewBath.setVisibility(View.INVISIBLE);
+        map_lblDireccion.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -214,6 +297,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
+                locationClickMap = latLng;
                 Geocoder geocoder = new Geocoder(getContext());
                 String direccion = "";
                 try {
@@ -230,7 +314,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 marker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)).title(direccion));
                 marker.showInfoWindow();
-                btnAniadirBanio.setVisibility(View.VISIBLE);
+                btnAddNewBath.setVisibility(View.VISIBLE);
                 map_lblDireccion.setText(direccion);
                 map_lblDireccion.setVisibility(View.VISIBLE);
             }
@@ -244,7 +328,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 this.marker.remove();
             }
             map_lblDireccion.setVisibility(View.INVISIBLE);
-            btnAniadirBanio.setVisibility(View.INVISIBLE);
+            btnAddNewBath.setVisibility(View.INVISIBLE);
             database.collection("banios").get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     Banio banio = null;
@@ -266,10 +350,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private void showWindow(Banio banio) {
         cl_window.setVisibility(View.VISIBLE);
-        txtDirection.setText(banio.getDireccion());
-        rat.setRating((float) banio.getPuntuacion());
+        lblDirection.setText(banio.getDireccion());
+        ratBath.setRating((float) banio.getPuntuacion());
 
-        txtVerMas.setOnClickListener(v -> {
+        lblMore.setOnClickListener(v -> {
             Bundle arguments = new Bundle();
             arguments.putString("id_banio", banio.getId_banio());
             navController.navigate(R.id.action_mapFragment_to_detailFragment, arguments); //CAMBIAR EL DESTINO Y AÑADIR EL PARÁMETRO DE ID DEL BAÑO A MOSTRAR
@@ -282,10 +366,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     LatLng latLng = null;
+                    int last = -1;
+                    int actualID = -1;
                     for (QueryDocumentSnapshot document : task.getResult()) {
+                        actualID = Integer.parseInt(document.getId());
                         Banio banio = document.toObject(Banio.class);
                         latLng = new LatLng(banio.getLatitud(), banio.getLongitud());
                         mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(banio.getDireccion())).setTag(banio.getId_banio());
+                        if (actualID > last) {
+                            last = actualID;
+                        }
+                        lastID = String.valueOf(last + 1);
                     }
                     getCurrentLocation();
                     mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -446,12 +537,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             e.printStackTrace();
         }
 
-        TextView mkl = ViewCompat.requireViewById(requireView(), R.id.txtDirection);
+        TextView mkl = ViewCompat.requireViewById(requireView(), R.id.lblDirection);
         ConstraintLayout cl = ViewCompat.requireViewById(requireView(), R.id.cl_window_map);
 
         cl.setVisibility(View.VISIBLE);
         mkl.setText(cadena);
 
-        RatingBar rat = ViewCompat.requireViewById(requireView(), R.id.cal_bath);
-        rat.setRating(3.5f);*/
+        RatingBar ratBath = ViewCompat.requireViewById(requireView(), R.id.cal_bath);
+        ratBath.setRating(3.5f);*/
 }

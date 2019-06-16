@@ -10,7 +10,7 @@
     android:id="@+id/cl_profile">
 
     <TextView
-        android:id="@+id/prof_lblContrasenia"
+        android:id="@+id/prof_lblPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toBottomOf="@+id/prof_txtEmail" />
 
     <EditText
-        android:id="@+id/prof_txtContrasenia"
+        android:id="@+id/prof_txtPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prof_lblContrasenia" />
+        app:layout_constraintTop_toBottomOf="@+id/prof_lblPassword" />
 
     <EditText
         android:id="@+id/prof_txtEmail"
@@ -55,10 +55,10 @@
         android:text="Email"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prof_txtNombre" />
+        app:layout_constraintTop_toBottomOf="@+id/prof_txtName" />
 
     <TextView
-        android:id="@+id/prof_lblNombre"
+        android:id="@+id/prof_lblName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -66,10 +66,10 @@
         android:text="Nombre"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prof_lblEditar" />
+        app:layout_constraintTop_toBottomOf="@+id/prof_lblTitle" />
 
     <EditText
-        android:id="@+id/prof_txtNombre"
+        android:id="@+id/prof_txtName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -79,10 +79,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prof_lblNombre" />
+        app:layout_constraintTop_toBottomOf="@+id/prof_lblName" />
 
     <Button
-        android:id="@+id/prof_btnGuardar"
+        android:id="@+id/prof_btnSave"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -92,10 +92,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prof_txtContrasenia" />
+        app:layout_constraintTop_toBottomOf="@+id/prof_txtPassword" />
 
     <TextView
-        android:id="@+id/prof_lblEditar"
+        android:id="@+id/prof_lblTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

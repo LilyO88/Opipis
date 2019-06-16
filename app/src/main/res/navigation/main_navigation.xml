@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_opinionFragment"
+            app:destination="@id/opinionFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
@@ -40,6 +43,9 @@
         <action
             android:id="@+id/action_mapFragment_to_addBathFragment"
             app:destination="@id/addBathFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_opinionFragment"
+            app:destination="@id/opinionFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -63,7 +69,12 @@
         android:id="@+id/opinionFragment"
         android:name="com.lidorttol.opipis.ui.OpinionFragment"
         android:label="fragment_opinion"
-        tools:layout="@layout/fragment_opinion" />
+        tools:layout="@layout/fragment_opinion" >
+        <argument
+            android:name="id_banio"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/addBathFragment"
         android:name="com.lidorttol.opipis.ui.AddBathFragment"

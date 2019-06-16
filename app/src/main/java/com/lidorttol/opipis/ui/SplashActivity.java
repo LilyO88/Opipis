@@ -56,9 +56,9 @@ public class SplashActivity extends AppCompatActivity {
 
 
     private void setupViews() {
-        txtNoInternet = ActivityCompat.requireViewById(this, R.id.txtNoInternet);
-        btnRetry = ActivityCompat.requireViewById(this, R.id.btnRetry);
-        logo = ActivityCompat.requireViewById(this, R.id.logo);
+        txtNoInternet = ActivityCompat.requireViewById(this, R.id.splash_lblError);
+        btnRetry = ActivityCompat.requireViewById(this, R.id.splash_btnRetry);
+        logo = ActivityCompat.requireViewById(this, R.id.splash_logo);
         database = FirebaseFirestore.getInstance();
 
         btnRetry.setOnClickListener(v -> {

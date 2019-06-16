@@ -11,7 +11,7 @@ public class Banio {
     public Banio() {
     }
 
-    public Banio(String direccion, String id_banio, double latitud, double longitud, double puntuacion) {
+    public Banio(String id_banio, String direccion, double latitud, double longitud, double puntuacion) {
         this.direccion = direccion;
         this.id_banio = id_banio;
         this.latitud = latitud;

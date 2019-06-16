@@ -10,7 +10,7 @@
 
 
     <TextView
-        android:id="@+id/lblContraseniaRep"
+        android:id="@+id/reg_lblPasswordRep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -18,10 +18,10 @@
         android:text="Repita la contraseña"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtContrasenia" />
+        app:layout_constraintTop_toBottomOf="@+id/reg_txtPassword" />
 
     <EditText
-        android:id="@+id/txtContraseniaRep"
+        android:id="@+id/reg_txtPasswordRep"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -31,10 +31,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblContraseniaRep" />
+        app:layout_constraintTop_toBottomOf="@+id/reg_lblPasswordRep" />
 
     <TextView
-        android:id="@+id/lblContrasenia"
+        android:id="@+id/reg_lblPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -42,10 +42,10 @@
         android:text="Contraseña"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/reg_txtEmail" />
 
     <EditText
-        android:id="@+id/txtContrasenia"
+        android:id="@+id/reg_txtPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -55,10 +55,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblContrasenia" />
+        app:layout_constraintTop_toBottomOf="@+id/reg_lblPassword" />
 
     <EditText
-        android:id="@+id/txtEmail"
+        android:id="@+id/reg_txtEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -68,10 +68,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/reg_lblEmail" />
 
     <TextView
-        android:id="@+id/lblEmail"
+        android:id="@+id/reg_lblEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -79,10 +79,10 @@
         android:text="Email"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtNombre" />
+        app:layout_constraintTop_toBottomOf="@+id/reg_txtName" />
 
     <TextView
-        android:id="@+id/lblNombre"
+        android:id="@+id/reg_lblName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -90,10 +90,10 @@
         android:text="Nombre"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblRegistro" />
+        app:layout_constraintTop_toBottomOf="@+id/reg_lblTitle" />
 
     <EditText
-        android:id="@+id/txtNombre"
+        android:id="@+id/reg_txtName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -102,10 +102,10 @@
         android:hint="Introduzca nombre"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblNombre" />
+        app:layout_constraintTop_toBottomOf="@+id/reg_lblName" />
 
     <Button
-        android:id="@+id/btnResgistro"
+        android:id="@+id/reg_btnRegister"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -114,10 +114,10 @@
         android:text="REGISTRARSE"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtContraseniaRep" />
+        app:layout_constraintTop_toBottomOf="@+id/reg_txtPasswordRep" />
 
     <TextView
-        android:id="@+id/lblRegistro"
+        android:id="@+id/reg_lblTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

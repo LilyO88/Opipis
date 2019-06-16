@@ -10,10 +10,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/cl_contenedor">
+        android:id="@+id/cl_container">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_datos"
+            android:id="@+id/cl_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin8dp"
@@ -22,67 +22,67 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <RatingBar
-                android:id="@+id/ratUnisex"
+                android:id="@+id/data_ratUnisex"
                 style="@android:style/Widget.DeviceDefault.RatingBar.Indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/txtUnisex"
+                app:layout_constraintBottom_toBottomOf="@+id/data_lblUnisex"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/txtUnisex" />
+                app:layout_constraintTop_toTopOf="@+id/data_lblUnisex" />
 
             <RatingBar
-                android:id="@+id/ratMinusvalidos"
+                android:id="@+id/data_ratDisabled"
                 style="@android:style/Widget.DeviceDefault.RatingBar.Indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/txtMinusvalidos"
+                app:layout_constraintBottom_toBottomOf="@+id/data_lblDisabled"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/txtMinusvalidos" />
+                app:layout_constraintTop_toTopOf="@+id/data_lblDisabled" />
 
             <RatingBar
-                android:id="@+id/ratTamanio"
+                android:id="@+id/data_ratSize"
                 style="@android:style/Widget.DeviceDefault.RatingBar.Indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/txtTamanio"
+                app:layout_constraintBottom_toBottomOf="@+id/data_lblSize"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/txtTamanio" />
+                app:layout_constraintTop_toTopOf="@+id/data_lblSize" />
 
             <RatingBar
-                android:id="@+id/ratPapel"
+                android:id="@+id/data_ratPaper"
                 style="@android:style/Widget.DeviceDefault.RatingBar.Indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/txtPapel"
+                app:layout_constraintBottom_toBottomOf="@+id/data_lblPaper"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/txtPapel" />
+                app:layout_constraintTop_toTopOf="@+id/data_lblPaper" />
 
             <RatingBar
-                android:id="@+id/ratPestillo"
+                android:id="@+id/data_ratLatch"
                 style="@android:style/Widget.DeviceDefault.RatingBar.Indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/txtPestillo"
+                app:layout_constraintBottom_toBottomOf="@+id/data_lblLatch"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/txtPestillo" />
+                app:layout_constraintTop_toTopOf="@+id/data_lblLatch" />
 
             <RatingBar
-                android:id="@+id/ratLimpieza"
+                android:id="@+id/data_ratCleaning"
                 style="@android:style/Widget.DeviceDefault.Light.RatingBar.Indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/txtLimpieza"
+                app:layout_constraintBottom_toBottomOf="@+id/data_lblCleaning"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/txtLimpieza" />
+                app:layout_constraintTop_toTopOf="@+id/data_lblCleaning" />
 
             <TextView
-                android:id="@+id/txtUnisex"
+                android:id="@+id/data_lblUnisex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -90,10 +90,10 @@
                 android:text="Unisex"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtMinusvalidos" />
+                app:layout_constraintTop_toBottomOf="@+id/data_lblDisabled" />
 
             <TextView
-                android:id="@+id/txtTamanio"
+                android:id="@+id/data_lblSize"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -101,10 +101,10 @@
                 android:text="Tamaño"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtPapel" />
+                app:layout_constraintTop_toBottomOf="@+id/data_lblPaper" />
 
             <TextView
-                android:id="@+id/txtMinusvalidos"
+                android:id="@+id/data_lblDisabled"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -112,10 +112,10 @@
                 android:text="Minusválidos"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtTamanio" />
+                app:layout_constraintTop_toBottomOf="@+id/data_lblSize" />
 
             <TextView
-                android:id="@+id/txtPapel"
+                android:id="@+id/data_lblPaper"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -123,10 +123,10 @@
                 android:text="Papel"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtPestillo" />
+                app:layout_constraintTop_toBottomOf="@+id/data_lblLatch" />
 
             <TextView
-                android:id="@+id/txtLimpieza"
+                android:id="@+id/data_lblCleaning"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -134,10 +134,10 @@
                 android:text="Limpieza"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divisor" />
+                app:layout_constraintTop_toBottomOf="@+id/data_divisor" />
 
             <TextView
-                android:id="@+id/txtNumOpinion"
+                android:id="@+id/data_lblNumOpinion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -145,10 +145,10 @@
                 android:text="nº de opiniones"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtDireccionDet" />
+                app:layout_constraintTop_toBottomOf="@+id/data_lblDirection" />
 
             <RatingBar
-                android:id="@+id/ratOpinion"
+                android:id="@+id/data_ratOpinion"
                 style="@style/Widget.AppCompat.RatingBar.Indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -156,14 +156,14 @@
                 android:layout_marginEnd="8dp"
                 android:max="5"
                 android:numStars="5"
-                app:layout_constraintBottom_toBottomOf="@+id/txtNumOpinion"
-                app:layout_constraintEnd_toStartOf="@+id/txtNumOpinion"
+                app:layout_constraintBottom_toBottomOf="@+id/data_lblNumOpinion"
+                app:layout_constraintEnd_toStartOf="@+id/data_lblNumOpinion"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/txtNumOpinion" />
+                app:layout_constraintTop_toTopOf="@+id/data_lblNumOpinion" />
 
             <TextView
-                android:id="@+id/txtDireccionDet"
+                android:id="@+id/data_lblDirection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -174,7 +174,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <View
-                android:id="@+id/divisor"
+                android:id="@+id/data_divisor"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginStart="16dp"
@@ -183,10 +183,10 @@
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtNumOpinion" />
+                app:layout_constraintTop_toBottomOf="@+id/data_lblNumOpinion" />
 
             <TextView
-                android:id="@+id/txtPestillo"
+                android:id="@+id/data_lblLatch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -194,13 +194,13 @@
                 android:text="Pestillo"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtLimpieza" />
+                app:layout_constraintTop_toBottomOf="@+id/data_lblCleaning" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_opiniones"
+            android:id="@+id/cl_opinions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -208,11 +208,11 @@
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cl_datos">
+            app:layout_constraintTop_toBottomOf="@+id/cl_data">
 
 
             <TextView
-                android:id="@+id/txtOpinionTitulo"
+                android:id="@+id/op_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -220,10 +220,10 @@
                 android:text="Opiniones"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divisor2" />
+                app:layout_constraintTop_toBottomOf="@+id/op_divisor" />
 
             <View
-                android:id="@+id/divisor2"
+                android:id="@+id/op_divisor"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginStart="16dp"
@@ -236,7 +236,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_opiniones"
+                android:id="@+id/op_rvOpinions"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -244,11 +244,11 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtOpinionTitulo" />
+                app:layout_constraintTop_toBottomOf="@+id/op_title" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_aniadir_opinion"
+            android:id="@+id/cl_add_opinion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin8dp"
@@ -258,10 +258,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cl_opiniones">
+            app:layout_constraintTop_toBottomOf="@+id/cl_opinions">
 
             <TextView
-                android:id="@+id/txtAniadirOpinion"
+                android:id="@+id/add_lblAddOpinion"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -269,13 +269,13 @@
                 android:text="@string/aniadir_opinion"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#FFD900FF    "
-                app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                app:layout_constraintBottom_toBottomOf="@+id/add_imgAddOpinion"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView2"
-                app:layout_constraintTop_toTopOf="@+id/imageView2" />
+                app:layout_constraintStart_toEndOf="@+id/add_imgAddOpinion"
+                app:layout_constraintTop_toTopOf="@+id/add_imgAddOpinion" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/add_imgAddOpinion"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginStart="32dp"

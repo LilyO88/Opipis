@@ -71,7 +71,7 @@
 
 
     <Button
-        android:id="@+id/btnAniadirBanio"
+        android:id="@+id/map_btnAddBath"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
         map:layout_constraintStart_toStartOf="parent">
 
         <RatingBar
-            android:id="@+id/cal_bath"
+            android:id="@+id/wind_ratBath"
             style="@style/Widget.AppCompat.RatingBar.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -109,11 +109,11 @@
             map:layout_constraintBottom_toBottomOf="parent"
             map:layout_constraintEnd_toEndOf="parent"
             map:layout_constraintHorizontal_bias="0.5"
-            map:layout_constraintStart_toEndOf="@+id/imageView"
-            map:layout_constraintTop_toBottomOf="@+id/txtDirection" />
+            map:layout_constraintStart_toEndOf="@+id/wind_imgBath"
+            map:layout_constraintTop_toBottomOf="@+id/wind_lblDirection" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/wind_imgBath"
             android:layout_width="150dp"
             android:layout_height="108dp"
             android:layout_marginStart="8dp"
@@ -124,7 +124,7 @@
             map:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txtVerMas"
+            android:id="@+id/wind_lblMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -133,23 +133,23 @@
             android:text="@string/ver_mas"
             android:textColor="#008DFF"
             android:textSize="20sp"
-            map:layout_constraintBottom_toTopOf="@+id/txtDirection"
+            map:layout_constraintBottom_toTopOf="@+id/wind_lblDirection"
             map:layout_constraintEnd_toEndOf="parent"
             map:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txtDirection"
+            android:id="@+id/wind_lblDirection"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:text="@string/direccion"
-            map:layout_constraintBottom_toTopOf="@+id/cal_bath"
+            map:layout_constraintBottom_toTopOf="@+id/wind_ratBath"
             map:layout_constraintEnd_toEndOf="parent"
             map:layout_constraintHorizontal_bias="0.5"
-            map:layout_constraintStart_toStartOf="@+id/cal_bath"
-            map:layout_constraintTop_toBottomOf="@+id/txtVerMas" />
+            map:layout_constraintStart_toStartOf="@+id/wind_ratBath"
+            map:layout_constraintTop_toBottomOf="@+id/wind_lblMore" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
