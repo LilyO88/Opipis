@@ -10,6 +10,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import android.app.Application;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -22,11 +26,13 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     private NavController navController;
     private AppBarConfiguration appbarConfiguration;
+    private static Application application;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        application = getApplication();
         setupViews();
     }
 
@@ -72,5 +78,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public static boolean isConnected() {
+        boolean connected = false;
+        ConnectivityManager connectivityManager = (ConnectivityManager) application.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            connected = true;
+        }
+
+        return connected;
+    }
 
 }

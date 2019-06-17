@@ -9,8 +9,29 @@
     android:id="@+id/cl_noInternet">
 
     <Button
+        android:id="@+id/ni_btnExit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="#C058D3"
+        android:paddingLeft="25sp"
+        android:paddingTop="10sp"
+        android:paddingRight="25sp"
+        android:paddingBottom="10sp"
+        android:text="SALIR DE LA APP"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ni_btnRetry" />
+
+    <Button
         android:id="@+id/ni_btnRetry"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
@@ -23,7 +44,7 @@
         android:text="REINTENTAR"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/white"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +55,7 @@
         android:layout_width="136dp"
         android:layout_height="173dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:src="@drawable/logosinfondo"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +71,8 @@
         android:layout_marginEnd="40dp"
         android:text="No hay conexión a internet"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ni_logo" />

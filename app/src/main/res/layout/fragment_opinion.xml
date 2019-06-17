@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cl_NewOpinion"
@@ -8,286 +7,290 @@
     android:layout_height="match_parent"
     android:layout_margin="@dimen/margin8dp"
     tools:context=".ui.opinion.OpinionFragment">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent">
 
-    <TextView
-        android:id="@+id/no_lblDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="Fecha de la visita"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/no_lblUnisex" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/no_lblComment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:text="Comentario"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/no_txtDate" />
+        <TextView
+            android:id="@+id/no_lblDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Fecha de la visita"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/no_lblUnisex" />
 
-    <RadioButton
-        android:id="@+id/no_rbNo_unisex"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="48dp"
-        android:text="No"
-        app:layout_constraintBottom_toBottomOf="@+id/no_rbSi_unisex"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/no_rbSi_unisex" />
+        <TextView
+            android:id="@+id/no_lblComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:text="Comentario"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/no_txtDate" />
 
-    <RadioButton
-        android:id="@+id/no_rbSi_unisex"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:text="Sí"
-        app:layout_constraintBottom_toBottomOf="@+id/no_lblUnisex"
-        app:layout_constraintEnd_toStartOf="@+id/no_rbNo_unisex"
-        app:layout_constraintTop_toTopOf="@+id/no_lblUnisex" />
+        <RadioButton
+            android:id="@+id/no_rbNo_unisex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48dp"
+            android:text="No"
+            app:layout_constraintBottom_toBottomOf="@+id/no_rbSi_unisex"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/no_rbSi_unisex" />
 
-    <RadioButton
-        android:id="@+id/no_rbNo_disabled"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="48dp"
-        android:text="No"
-        app:layout_constraintBottom_toBottomOf="@+id/no_rbSi_disabled"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/no_rbSi_disabled" />
+        <RadioButton
+            android:id="@+id/no_rbSi_unisex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:text="Sí"
+            app:layout_constraintBottom_toBottomOf="@+id/no_lblUnisex"
+            app:layout_constraintEnd_toStartOf="@+id/no_rbNo_unisex"
+            app:layout_constraintTop_toTopOf="@+id/no_lblUnisex" />
 
-    <RadioButton
-        android:id="@+id/no_rbSi_disabled"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:text="Sí"
-        app:layout_constraintBottom_toBottomOf="@+id/no_lblDisabled"
-        app:layout_constraintEnd_toStartOf="@+id/no_rbNo_disabled"
-        app:layout_constraintTop_toTopOf="@+id/no_lblDisabled" />
+        <RadioButton
+            android:id="@+id/no_rbNo_disabled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48dp"
+            android:text="No"
+            app:layout_constraintBottom_toBottomOf="@+id/no_rbSi_disabled"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/no_rbSi_disabled" />
 
-    <RadioButton
-        android:id="@+id/no_rbNo_paper"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="48dp"
-        android:text="No"
-        app:layout_constraintBottom_toBottomOf="@+id/no_rbSi_paper"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/no_rbSi_paper" />
+        <RadioButton
+            android:id="@+id/no_rbSi_disabled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:text="Sí"
+            app:layout_constraintBottom_toBottomOf="@+id/no_lblDisabled"
+            app:layout_constraintEnd_toStartOf="@+id/no_rbNo_disabled"
+            app:layout_constraintTop_toTopOf="@+id/no_lblDisabled" />
 
-    <RadioButton
-        android:id="@+id/no_rbSi_paper"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:text="Sí"
-        app:layout_constraintBottom_toBottomOf="@+id/no_lblPaper"
-        app:layout_constraintEnd_toStartOf="@+id/no_rbNo_paper"
-        app:layout_constraintTop_toTopOf="@+id/no_lblPaper" />
+        <RadioButton
+            android:id="@+id/no_rbNo_paper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48dp"
+            android:text="No"
+            app:layout_constraintBottom_toBottomOf="@+id/no_rbSi_paper"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/no_rbSi_paper" />
 
-    <RadioButton
-        android:id="@+id/no_rbNo_latch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="48dp"
-        android:text="No"
-        app:layout_constraintBottom_toBottomOf="@+id/no_rbSi_latch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/no_rbSi_latch" />
+        <RadioButton
+            android:id="@+id/no_rbSi_paper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:text="Sí"
+            app:layout_constraintBottom_toBottomOf="@+id/no_lblPaper"
+            app:layout_constraintEnd_toStartOf="@+id/no_rbNo_paper"
+            app:layout_constraintTop_toTopOf="@+id/no_lblPaper" />
 
-    <RadioButton
-        android:id="@+id/no_rbSi_latch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:text="Sí"
-        app:layout_constraintBottom_toBottomOf="@+id/no_lblLatch"
-        app:layout_constraintEnd_toStartOf="@+id/no_rbNo_latch"
-        app:layout_constraintTop_toTopOf="@+id/no_lblLatch" />
+        <RadioButton
+            android:id="@+id/no_rbNo_latch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48dp"
+            android:text="No"
+            app:layout_constraintBottom_toBottomOf="@+id/no_rbSi_latch"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/no_rbSi_latch" />
 
-    <TextView
-        android:id="@+id/no_lblUnisex"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="Unisex"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/no_lblDisabled" />
+        <RadioButton
+            android:id="@+id/no_rbSi_latch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:text="Sí"
+            app:layout_constraintBottom_toBottomOf="@+id/no_lblLatch"
+            app:layout_constraintEnd_toStartOf="@+id/no_rbNo_latch"
+            app:layout_constraintTop_toTopOf="@+id/no_lblLatch" />
 
-    <TextView
-        android:id="@+id/no_lblDisabled"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="Minusválidos"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/no_lblPaper" />
+        <TextView
+            android:id="@+id/no_lblUnisex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Unisex"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/no_lblDisabled" />
 
-    <TextView
-        android:id="@+id/no_lblPaper"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="Papel"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/no_lblLatch" />
+        <TextView
+            android:id="@+id/no_lblDisabled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Minusválidos"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/no_lblPaper" />
 
-    <TextView
-        android:id="@+id/no_lblCleaning"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:text="Limpieza"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/no_divisor" />
+        <TextView
+            android:id="@+id/no_lblPaper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Papel"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/no_lblLatch" />
 
-    <RatingBar
-        android:id="@+id/no_ratCleaning"
-        style="@android:style/Widget.DeviceDefault.Light.RatingBar.Indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/no_lblCleaning"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/no_lblCleaning" />
+        <TextView
+            android:id="@+id/no_lblCleaning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="Limpieza"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/no_divisor" />
 
-    <TextView
-        android:id="@+id/no_lblSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="Tamaño"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/no_lblCleaning" />
+        <TextView
+            android:id="@+id/no_lblSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Tamaño"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/no_lblCleaning" />
 
-    <TextView
-        android:id="@+id/no_lblLatch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="Pestillo"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/no_lblSize" />
-
-    <RatingBar
-        android:id="@+id/no_ratSize"
-        style="@android:style/Widget.DeviceDefault.RatingBar.Indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/no_lblSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/no_lblSize" />
-
-    <TextView
-        android:id="@+id/no_lblTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:text="Opinión"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/no_lblDirection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/direccion"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/no_lblTitle" />
-
-    <View
-        android:id="@+id/no_divisor"
-        android:layout_width="379dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/no_lblDirection" />
-
-    <EditText
-        android:id="@+id/no_txtDate"
-        android:layout_width="195dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:inputType="date"
-        app:layout_constraintBottom_toBottomOf="@+id/no_lblDate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/no_ratSize"
-        app:layout_constraintTop_toTopOf="@+id/no_lblDate" />
-
-    <EditText
-        android:id="@+id/no_txtComment"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/no_lblComment" />
-
-    <Button
-        android:id="@+id/no_btnSave"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:text="Guardar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/no_btnCancel"
-        app:layout_constraintTop_toBottomOf="@+id/no_txtComment" />
-
-    <Button
-        android:id="@+id/no_btnCancel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="Cancelar"
-        app:layout_constraintEnd_toStartOf="@+id/no_btnSave"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/no_btnSave" />
+        <TextView
+            android:id="@+id/no_lblLatch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Pestillo"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/no_lblSize" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <RatingBar
+            android:id="@+id/no_ratSize"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/no_lblSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:isIndicator="false"
+            app:layout_constraintTop_toTopOf="@+id/no_lblSize" />
+
+        <TextView
+            android:id="@+id/no_lblTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:text="Opinión"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/no_lblDirection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/direccion"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/no_lblTitle" />
+
+        <View
+            android:id="@+id/no_divisor"
+            android:layout_width="379dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/no_lblDirection" />
+
+        <EditText
+            android:id="@+id/no_txtDate"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ems="10"
+            android:inputType="date"
+            app:layout_constraintBottom_toBottomOf="@+id/no_lblDate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/no_ratSize"
+            app:layout_constraintTop_toTopOf="@+id/no_lblDate" />
+
+        <EditText
+            android:id="@+id/no_txtComment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/no_lblComment" />
+
+        <Button
+            android:id="@+id/no_btnSave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:text="Guardar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/no_btnCancel"
+            app:layout_constraintTop_toBottomOf="@+id/no_txtComment" />
+
+        <Button
+            android:id="@+id/no_btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Cancelar"
+            app:layout_constraintEnd_toStartOf="@+id/no_btnSave"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/no_btnSave" />
+
+        <RatingBar
+            android:id="@+id/no_ratCleaning"
+            style="@android:style/Widget.Material.Light.RatingBar.Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:isIndicator="false"
+            app:layout_constraintBottom_toBottomOf="@+id/no_lblCleaning"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/no_lblCleaning" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

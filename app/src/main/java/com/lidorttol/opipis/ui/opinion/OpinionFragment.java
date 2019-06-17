@@ -1,6 +1,5 @@
 package com.lidorttol.opipis.ui.opinion;
 
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -102,10 +102,14 @@ public class OpinionFragment extends Fragment {
         title = ViewCompat.requireViewById(getView(), R.id.no_lblDirection);
         btnCancel = ViewCompat.requireViewById(getView(), R.id.no_btnCancel);
         btnSave = ViewCompat.requireViewById(getView(), R.id.no_btnSave);
-        navController = NavHostFragment.findNavController(OpinionFragment.this);
 
+        navController = NavHostFragment.findNavController(OpinionFragment.this);
         btnSaveClicked = false;
 
+        setListeners();
+    }
+
+    private void setListeners() {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,6 +123,8 @@ public class OpinionFragment extends Fragment {
             navController.popBackStack();
 
         });
+
+
     }
 
     private void deleteBath() {

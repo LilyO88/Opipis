@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,13 +50,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.lidorttol.opipis.R;
 import com.lidorttol.opipis.base.YesNoDialogFragment;
 import com.lidorttol.opipis.data.Banio;
+import com.lidorttol.opipis.ui.main.MainActivity;
 import com.lidorttol.opipis.ui.main.MainActivityViewModel;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDialogFragment.Listener{
+public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDialogFragment.Listener {
 
     private static final int RQ_PERMISOS = 1;
     private static final String[] PERMISOS = {
@@ -70,9 +72,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
     private NavController navController;
     private MainActivityViewModel viewModelMainActivity;
     private CameraPosition cameraPosition;
-    private boolean connected;
+//    private boolean connected;
     private Button btnAddNewBath;
-    private TextView map_lblDireccion;
+    //    private TextView map_lblDireccion;
     private Marker marker;
     private TextView lblMore;
     private TextView lblDirection;
@@ -81,6 +83,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
     private LatLng sanroque;
     private LatLng locationClickMap;
     private String lastID;
+    private LocationManager locationManager;
+
 
     //    View rootView;
 
@@ -89,6 +93,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+//        try {
+//            observeConexion();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         super.onCreate(savedInstanceState);
     }
 
@@ -102,63 +111,65 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModelMainActivity =   ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
-        setupViews();
-
-        try {
-            isConnected();
+        viewModelMainActivity = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
+        navController = NavHostFragment.findNavController(MapFragment.this);
+//        connected = MainActivity.isConnected();
+/*        try {
+            observeConexion();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }*/
+        mMapView = ViewCompat.requireViewById(requireView(), R.id.map);
+
+        if(MainActivity.isConnected()) {
+            if (mMapView != null) {
+                mMapView.onCreate(savedInstanceState);
+                mMapView.onResume(); // Necesario para obtener el mapa para mostrar inmediatamente
+
+                mMapView.getMapAsync(this);
+            }
+        } else {
+            navController.navigate(R.id.action_mapFragment_to_noInternetFragment);
         }
-
-        //INTERNET
-        if (mMapView != null) {
-            mMapView.onCreate(savedInstanceState);
-            mMapView.onResume(); // Necesario para obtener el mapa para mostrar inmediatamente
-
-            mMapView.getMapAsync(this);
-        }
-
         //Solicitud de permiso de localización
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             MapFragment.this.requestPermissions(PERMISOS, RQ_PERMISOS);
         }
+        setupViews();
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
 
-    private void isConnected() throws InterruptedException {
+    /* private void observeConexion() throws InterruptedException {
         viewModelMainActivity.getConnected().observe(this, connected -> {
-            if (!connected) {
-                // No hay conexión a Internet en este momento
-                navController.navigate(R.id.action_mapFragment_to_noInternetFragment);
-            }
+            this.connected = connected;
         });
-
-    }
+    }*/
 
     private void setupViews() {
-        mMapView = ViewCompat.requireViewById(requireView(), R.id.map);
         database = FirebaseFirestore.getInstance();
         btnAddNewBath = ViewCompat.requireViewById(getView(), R.id.map_btnAddBath);
-        map_lblDireccion = ViewCompat.requireViewById(getView(), R.id.map_lblDireccion);
+//        map_lblDireccion = ViewCompat.requireViewById(getView(), R.id.map_lblDireccion);
         lblMore = ViewCompat.requireViewById(requireView(), R.id.wind_lblMore);
         lblDirection = ViewCompat.requireViewById(requireView(), R.id.wind_lblDirection);
         cl_window = ViewCompat.requireViewById(requireView(), R.id.cl_window_map);
         ratBath = ViewCompat.requireViewById(requireView(), R.id.wind_ratBath);
 
-        navController = NavHostFragment.findNavController(MapFragment.this);
 
         //Innicializar el objeto, sino lo considera nulo
         sanroque = new LatLng(36.210135, -5.393580);
         cameraPosition = new CameraPosition.Builder().target(sanroque).zoom(14).build();
 
-        try {
+        /*try {
             viewModelMainActivity.getConnected().observe(getViewLifecycleOwner(), connectedO -> {
                 connected = connectedO;
             });
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
         btnAddNewBath.setOnClickListener(v -> {
             showConfirmationDialog();
@@ -182,7 +193,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
             int last = -1;
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    if(Integer.parseInt(document.getId()) > last) {
+                    if (Integer.parseInt(document.getId()) > last) {
                         last = Integer.parseInt(document.getId());
                     }
                 }
@@ -227,11 +238,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
     @Override
     public void onNegativeButtonClick(DialogInterface dialog) {
         dialog.dismiss();
-        if(marker != null) {
+        if (marker != null) {
             marker.remove();
         }
         btnAddNewBath.setVisibility(View.INVISIBLE);
-        map_lblDireccion.setVisibility(View.INVISIBLE);
+//        map_lblDireccion.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -253,7 +264,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
             mGoogleMap.setMyLocationEnabled(true); //NO FUNCIONA!!!!
 
             //Obtener la ubicación actual
-            LocationManager locationManager = (LocationManager) getActivity().getSystemService(getContext().LOCATION_SERVICE);
+            LocationManager locationManager = (LocationManager) requireActivity().getSystemService(getContext().LOCATION_SERVICE);
             LocationListener locationListener = new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
@@ -271,21 +282,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
                 public void onProviderDisabled(String provider) {
                 }
             };
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 500, locationListener);
+            Location location;
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 500, locationListener);
+                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            } else {
+                locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 1000, 500, locationListener);
+                location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+            }
+//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 500, locationListener);
 //            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER); Ha dejado de funcionar del 15 noche al 16 de junio mediodía
-            Location location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+//            Location location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+//            boolean samnjak = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);    //FALSE SI GPS DESACTIVADO
+//            boolean samnjak2 = locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER);       //SIEMPRE TRUE
+
             if (location != null) {
                 LatLng latLngActual = new LatLng(location.getLatitude(), location.getLongitude());
                 cameraPosition = new CameraPosition.Builder().target(latLngActual).zoom(16).build();
             }
-
-
         }
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
+        locationManager = (LocationManager) requireActivity().getSystemService(getContext().LOCATION_SERVICE);
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -293,13 +314,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
             e.printStackTrace();
         }
         //Comprueba si hay conexión !!!!!!!!!!
-        if (connected) {
+        if (MainActivity.isConnected()) {
             recoverBaths();
             setupMarkersListener();
             //readDatabase();
         } else {
             //Mostrar diálogo de reintentar conexión !!!!!!!!!!!!!!!!!!!!!!!!
-
         }
 
         //Para agregar los botones de zoom y ubicación
@@ -315,28 +335,44 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
         mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                locationClickMap = latLng;
-                Geocoder geocoder = new Geocoder(getContext());
-                String direccion = "";
-                try {
-                    direccion = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1).get(0).getAddressLine(0);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (MainActivity.isConnected()) {
+                    locationClickMap = latLng;
+                    Geocoder geocoder = new Geocoder(getContext());
+                    String direccion = "";
+                    try {
+                        direccion = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1).get(0).getAddressLine(0);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (marker != null) {
+                        marker.remove();
+                    }
+
+                    cl_window.setVisibility(View.INVISIBLE);
+
+                    if(TextUtils.equals(direccion, "")) {
+                        if (marker != null) {
+                            marker.remove();
+                        }
+                        Toast.makeText(requireActivity(), "No se ha recogido una dirección válida, inténtelo de nuevo.", Toast.LENGTH_LONG);
+                    } else {
+                        marker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)).title(direccion));
+                        cameraPosition = new CameraPosition.Builder().target(latLng).zoom(16).build();
+                        mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                        marker.showInfoWindow();
+                        btnAddNewBath.setVisibility(View.VISIBLE);
+                        //                map_lblDireccion.setText(direccion);
+                        //                map_lblDireccion.setVisibility(View.VISIBLE);
+
+                    }
+                } else {
+                    navController.navigate(R.id.action_mapFragment_to_noInternetFragment);
                 }
-
-                if (marker != null) {
-                    marker.remove();
-                }
-
-                cl_window.setVisibility(View.INVISIBLE);
-
-                marker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)).title(direccion));
-                marker.showInfoWindow();
-                btnAddNewBath.setVisibility(View.VISIBLE);
-                map_lblDireccion.setText(direccion);
-                map_lblDireccion.setVisibility(View.VISIBLE);
             }
         });
+
+
     }
 
     private void setupMarkersListener() {
@@ -345,7 +381,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
             if (this.marker != null) {
                 this.marker.remove();
             }
-            map_lblDireccion.setVisibility(View.INVISIBLE);
+//            map_lblDireccion.setVisibility(View.INVISIBLE);
             btnAddNewBath.setVisibility(View.INVISIBLE);
             database.collection("banios").get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
@@ -452,12 +488,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
 
 
 
-/*    private boolean isConnected() {
+/*    private boolean observeConexion() {
         boolean connected = false;
         ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-        if (networkInfo != null && networkInfo.isConnected()) {
+        if (networkInfo != null && networkInfo.observeConexion()) {
             // Si hay conexión a Internet en este momento
             connected = true;
         }
