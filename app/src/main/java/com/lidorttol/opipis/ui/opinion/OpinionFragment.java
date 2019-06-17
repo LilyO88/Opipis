@@ -1,13 +1,15 @@
-package com.lidorttol.opipis.ui;
+package com.lidorttol.opipis.ui.opinion;
 
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +38,8 @@ public class OpinionFragment extends Fragment {
     private boolean btnSaveClicked;
     private TextView title;
     private Banio banio;
+    private NavController navController;
+    private OpinionFragmentViewModel viewModelOpinion;
 
 
     public OpinionFragment() {
@@ -49,13 +53,14 @@ public class OpinionFragment extends Fragment {
             new_bath = getArguments().getString("new_bath");
             database = FirebaseFirestore.getInstance();
             banio = new Banio();
+
             if (new_bath != null) {
                 database.collection("banios").document(new_bath)
                         .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         banio = documentSnapshot.toObject(Banio.class);
-                        title.setText(banio.getDireccion());
+                        viewModelOpinion.setBanioParam(banio);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -82,29 +87,37 @@ public class OpinionFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        viewModelOpinion = ViewModelProviders.of(this).get(OpinionFragmentViewModel.class);
+        observeBanio();
         setupViews();
+    }
+
+    private void observeBanio() {
+        viewModelOpinion.getBanioParam().observe(getViewLifecycleOwner(), banio -> {
+            title.setText(banio.getDireccion());
+        });
     }
 
     private void setupViews() {
         title = ViewCompat.requireViewById(getView(), R.id.no_lblDirection);
         btnCancel = ViewCompat.requireViewById(getView(), R.id.no_btnCancel);
         btnSave = ViewCompat.requireViewById(getView(), R.id.no_btnSave);
-        btnSaveClicked = false;
+        navController = NavHostFragment.findNavController(OpinionFragment.this);
 
-//            Banio banio = database.collection("banios").document(new_bath).get().getResult().toObject(Banio.class);
+        btnSaveClicked = false;
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnSaveClicked = true;
-                getActivity().getSupportFragmentManager().popBackStack();
+                navController.popBackStack();
             }
         });
 
         btnCancel.setOnClickListener(v -> {
             deleteBath();
-            getActivity().getSupportFragmentManager().popBackStack();
+            navController.popBackStack();
+
         });
     }
 

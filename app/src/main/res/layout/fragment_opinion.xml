@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/margin8dp"
-    tools:context=".ui.OpinionFragment">
+    tools:context=".ui.opinion.OpinionFragment">
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_height="wrap_content"
     android:layout_width="match_parent">

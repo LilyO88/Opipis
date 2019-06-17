@@ -1,4 +1,4 @@
-package com.lidorttol.opipis.ui;
+package com.lidorttol.opipis.ui.opinionList;
 
 
 import android.os.Bundle;

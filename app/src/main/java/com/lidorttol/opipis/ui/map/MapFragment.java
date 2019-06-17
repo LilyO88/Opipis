@@ -1,4 +1,4 @@
-package com.lidorttol.opipis.ui;
+package com.lidorttol.opipis.ui.map;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -16,6 +16,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -42,7 +43,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -102,8 +102,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        viewModelMainActivity =   ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
         setupViews();
 
+        try {
+            isConnected();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        //INTERNET
         if (mMapView != null) {
             mMapView.onCreate(savedInstanceState);
             mMapView.onResume(); // Necesario para obtener el mapa para mostrar inmediatamente
@@ -117,9 +125,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
         }
     }
 
+
+    private void isConnected() throws InterruptedException {
+        viewModelMainActivity.getConnected().observe(this, connected -> {
+            if (!connected) {
+                // No hay conexión a Internet en este momento
+                navController.navigate(R.id.action_mapFragment_to_noInternetFragment);
+            }
+        });
+
+    }
+
     private void setupViews() {
         mMapView = ViewCompat.requireViewById(requireView(), R.id.map);
-        viewModelMainActivity = new MainActivityViewModel(getActivity().getApplication());
         database = FirebaseFirestore.getInstance();
         btnAddNewBath = ViewCompat.requireViewById(getView(), R.id.map_btnAddBath);
         map_lblDireccion = ViewCompat.requireViewById(getView(), R.id.map_lblDireccion);

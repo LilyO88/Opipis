@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.lidorttol.opipis.ui.DetailFragment"
+        android:name="com.lidorttol.opipis.ui.opinionList.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
         <action
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.lidorttol.opipis.ui.MapFragment"
+        android:name="com.lidorttol.opipis.ui.map.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" >
         <action
@@ -46,6 +46,9 @@
         <action
             android:id="@+id/action_mapFragment_to_opinionFragment"
             app:destination="@id/opinionFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_noInternetFragment"
+            app:destination="@id/noInternetFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -67,7 +70,7 @@
     </fragment>
     <fragment
         android:id="@+id/opinionFragment"
-        android:name="com.lidorttol.opipis.ui.OpinionFragment"
+        android:name="com.lidorttol.opipis.ui.opinion.OpinionFragment"
         android:label="fragment_opinion"
         tools:layout="@layout/fragment_opinion" >
         <argument
@@ -80,4 +83,9 @@
         android:name="com.lidorttol.opipis.ui.AddBathFragment"
         android:label="fragment_add_bath"
         tools:layout="@layout/fragment_add_bath" />
+    <fragment
+        android:id="@+id/noInternetFragment"
+        android:name="com.lidorttol.opipis.ui.NoInternetFragment"
+        android:label="fragment_no_internet"
+        tools:layout="@layout/fragment_no_internet" />
 </navigation>

@@ -3,6 +3,7 @@ package com.lidorttol.opipis.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,7 +40,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        viewModelActivityMain = new MainActivityViewModel(getApplication());
+        viewModelActivityMain =  ViewModelProviders.of(this).get(MainActivityViewModel.class);
         setupViews();
         setSplash();
     }
@@ -101,7 +102,6 @@ public class SplashActivity extends AppCompatActivity {
                 btnRetry.setVisibility(View.VISIBLE);
             }
         });
-
     }
 
     private void navigateToMain() {

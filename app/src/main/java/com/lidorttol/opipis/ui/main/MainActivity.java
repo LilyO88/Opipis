@@ -15,7 +15,6 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 import com.lidorttol.opipis.R;
-import com.lidorttol.opipis.ui.OpinionFragment;
 
 public class MainActivity extends AppCompatActivity {
 
