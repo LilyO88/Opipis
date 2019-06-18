@@ -109,7 +109,6 @@ public class OpinionFragment extends Fragment {
                 recoverBath(new_bath);
             }
             getLastOpinionID();
-
         }
     }
 

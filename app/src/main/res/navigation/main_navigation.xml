@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.lidorttol.opipis.ui.opinionList.DetailFragment"
+        android:name="com.lidorttol.opipis.ui.opinionList.OpinionDetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" >
+        tools:layout="@layout/fragment_opinion_detail" >
         <action
             android:id="@+id/action_detailFragment_to_opinionFragment"
             app:destination="@id/opinionFragment" />
@@ -19,6 +19,8 @@
         <argument
             android:name="id_banio"
             app:argType="string" />
+        <argument
+            android:name="global" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"

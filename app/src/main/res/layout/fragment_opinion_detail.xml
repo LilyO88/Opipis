@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.opinionList.DetailFragment">
+    tools:context=".ui.opinionList.OpinionDetailFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,25 +21,138 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <RatingBar
-                android:id="@+id/data_ratUnisex"
-                style="@android:style/Widget.DeviceDefault.RatingBar.Indicator"
+            <TextView
+                android:id="@+id/data_lblNoUnisex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
+                android:text="No"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintBottom_toBottomOf="@+id/data_sepatatorUnisex"
+                app:layout_constraintStart_toEndOf="@+id/data_sepatatorUnisex"
+                app:layout_constraintTop_toTopOf="@+id/data_sepatatorUnisex"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/data_lblNoDisabled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="No"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintBottom_toBottomOf="@+id/data_sepatatorDisabled"
+                app:layout_constraintStart_toEndOf="@+id/data_sepatatorDisabled"
+                app:layout_constraintTop_toTopOf="@+id/data_sepatatorDisabled"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/data_lblNoPaper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="No"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintBottom_toBottomOf="@+id/data_sepatatorPaper"
+                app:layout_constraintStart_toEndOf="@+id/data_sepatatorPaper"
+                app:layout_constraintTop_toTopOf="@+id/data_sepatatorPaper"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/data_lblNoLatch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="No"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintBottom_toBottomOf="@+id/data_sepatatorLatch"
+                app:layout_constraintStart_toEndOf="@+id/data_sepatatorLatch"
+                app:layout_constraintTop_toTopOf="@+id/data_sepatatorLatch"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/data_lblSiUnisex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="Sí"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintBottom_toBottomOf="@+id/data_sepatatorUnisex"
+                app:layout_constraintEnd_toStartOf="@+id/data_sepatatorUnisex"
+                app:layout_constraintTop_toTopOf="@+id/data_sepatatorUnisex" />
+
+            <TextView
+                android:id="@+id/data_lblSiLatch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="Sí"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintBottom_toBottomOf="@+id/data_sepatatorLatch"
+                app:layout_constraintEnd_toStartOf="@+id/data_sepatatorLatch"
+                app:layout_constraintTop_toTopOf="@+id/data_sepatatorLatch" />
+
+            <TextView
+                android:id="@+id/data_lblSiPaper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="Sí"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintBottom_toBottomOf="@+id/data_sepatatorPaper"
+                app:layout_constraintEnd_toStartOf="@+id/data_sepatatorPaper"
+                app:layout_constraintTop_toTopOf="@+id/data_sepatatorPaper" />
+
+            <TextView
+                android:id="@+id/data_lblSiDisabled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="Sí"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintBottom_toBottomOf="@+id/data_sepatatorDisabled"
+                app:layout_constraintEnd_toStartOf="@+id/data_sepatatorDisabled"
+                app:layout_constraintTop_toTopOf="@+id/data_sepatatorDisabled" />
+
+            <TextView
+                android:id="@+id/data_sepatatorUnisex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/data_lblUnisex"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/data_ratSize"
+                app:layout_constraintStart_toStartOf="@+id/data_ratSize"
                 app:layout_constraintTop_toTopOf="@+id/data_lblUnisex" />
 
-            <RatingBar
-                android:id="@+id/data_ratDisabled"
-                style="@android:style/Widget.DeviceDefault.RatingBar.Indicator"
+            <TextView
+                android:id="@+id/data_sepatatorDisabled"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:text="/"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/data_lblDisabled"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/data_ratSize"
+                app:layout_constraintStart_toStartOf="@+id/data_ratSize"
                 app:layout_constraintTop_toTopOf="@+id/data_lblDisabled" />
+
+            <TextView
+                android:id="@+id/data_sepatatorPaper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/data_lblPaper"
+                app:layout_constraintEnd_toEndOf="@+id/data_ratSize"
+                app:layout_constraintStart_toStartOf="@+id/data_ratSize"
+                app:layout_constraintTop_toTopOf="@+id/data_lblPaper" />
 
             <RatingBar
                 android:id="@+id/data_ratSize"
@@ -50,26 +163,6 @@
                 app:layout_constraintBottom_toBottomOf="@+id/data_lblSize"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/data_lblSize" />
-
-            <RatingBar
-                android:id="@+id/data_ratPaper"
-                style="@android:style/Widget.DeviceDefault.RatingBar.Indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/data_lblPaper"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/data_lblPaper" />
-
-            <RatingBar
-                android:id="@+id/data_ratLatch"
-                style="@android:style/Widget.DeviceDefault.RatingBar.Indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/data_lblLatch"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/data_lblLatch" />
 
             <RatingBar
                 android:id="@+id/data_ratCleaning"
@@ -101,7 +194,7 @@
                 android:text="Tamaño"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/data_lblPaper" />
+                app:layout_constraintTop_toBottomOf="@+id/data_lblCleaning" />
 
             <TextView
                 android:id="@+id/data_lblDisabled"
@@ -112,7 +205,7 @@
                 android:text="Minusválidos"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/data_lblSize" />
+                app:layout_constraintTop_toBottomOf="@+id/data_lblPaper" />
 
             <TextView
                 android:id="@+id/data_lblPaper"
@@ -194,7 +287,18 @@
                 android:text="Pestillo"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/data_lblCleaning" />
+                app:layout_constraintTop_toBottomOf="@+id/data_lblSize" />
+
+            <TextView
+                android:id="@+id/data_sepatatorLatch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/data_lblLatch"
+                app:layout_constraintEnd_toEndOf="@+id/data_ratSize"
+                app:layout_constraintStart_toStartOf="@+id/data_ratSize"
+                app:layout_constraintTop_toTopOf="@+id/data_lblLatch" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

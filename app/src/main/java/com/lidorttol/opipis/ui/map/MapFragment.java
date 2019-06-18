@@ -69,27 +69,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
     private static final String TAG_DIALOG_FRAGMENT = "TAG_DIALOG_FRAGMENT";
     private static final int RC_DIALOG_FRAGMENT = 1;
 
-    private MapView mMapView;
-    private GoogleMap mGoogleMap;
     private FirebaseFirestore database;
     private NavController navController;
-    private MainActivityViewModel viewModelMainActivity;
-    private CameraPosition cameraPosition;
+    private MapFragmentViewModel viewModelMapFragment;
+//    private LocationManager locationManager;
     //    private boolean connected;
-    private Button btnAddNewBath;
     //    private TextView map_lblDireccion;
+
+    private MapView mMapView;
+    private GoogleMap mGoogleMap;
     private Marker marker;
+    private CameraPosition cameraPosition;
+
     private TextView lblMore;
     private TextView lblDirection;
     private ConstraintLayout cl_window;
     private RatingBar ratBath;
+    private Button btnAddNewBath;
+
     private LatLng sanroque;
     private LatLng locationClickMap;
     private String lastID;
-    private LocationManager locationManager;
     private List<Opinion> listOpinions;
-
-    private MapFragmentViewModel viewModelMapFragment;
     private List<Banio> listBanios;
 
 
@@ -171,7 +172,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModelMainActivity = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
         navController = NavHostFragment.findNavController(MapFragment.this);
 //        connected = MainActivity.isConnected();
 /*        try {
@@ -380,7 +380,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-        locationManager = (LocationManager) requireActivity().getSystemService(getContext().LOCATION_SERVICE);
+//        locationManager = (LocationManager) requireActivity().getSystemService(getContext().LOCATION_SERVICE);
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
