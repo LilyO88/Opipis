@@ -50,11 +50,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.lidorttol.opipis.R;
 import com.lidorttol.opipis.base.YesNoDialogFragment;
 import com.lidorttol.opipis.data.Banio;
+import com.lidorttol.opipis.data.Opinion;
 import com.lidorttol.opipis.ui.main.MainActivity;
 import com.lidorttol.opipis.ui.main.MainActivityViewModel;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDialogFragment.Listener {
@@ -72,7 +75,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
     private NavController navController;
     private MainActivityViewModel viewModelMainActivity;
     private CameraPosition cameraPosition;
-//    private boolean connected;
+    //    private boolean connected;
     private Button btnAddNewBath;
     //    private TextView map_lblDireccion;
     private Marker marker;
@@ -84,6 +87,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
     private LatLng locationClickMap;
     private String lastID;
     private LocationManager locationManager;
+    private List<Opinion> listOpinions;
+
+    private MapFragmentViewModel viewModelMapFragment;
+    private List<Banio> listBanios;
 
 
     //    View rootView;
@@ -101,11 +108,64 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
         super.onCreate(savedInstanceState);
     }
 
+    private void updateBaths() {
+        for(Banio banio: listBanios) {
+            double globales = 0;
+            double global = 0;
+            int totalOpinions = 0;
+            for(Opinion opinion: listOpinions) {
+                if(opinion.getId_banio().equals(banio.getId_banio())) {
+                    globales += opinion.getGlobal();
+                    totalOpinions++;
+                }
+            }
+            global = globales / totalOpinions;
+            updateGlobalBath(banio.getId_banio(), global);
+        }
+    }
+
+    private void updateGlobalBath(String id_banio, double global) {
+        database.collection("banios").document(id_banio).update("puntuacion", global)
+                .addOnSuccessListener(aVoid -> Log.d("", "DocumentSnapshot successfully updated!"))
+                .addOnFailureListener(e -> Log.d("", "Error updating document", e));
+    }
+
+    private void recoverBaths() {
+        database.collection("banios").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                viewModelMapFragment.setBaniosLiveData(task.getResult().toObjects(Banio.class));
+            }
+        });
+    }
+
+    private void recoverOpinions() {
+        database.collection("opiniones").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                viewModelMapFragment.setOpinionsLiveData(task.getResult().toObjects(Opinion.class));
+            }
+        });
+    }
+
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
+
+
+        database = FirebaseFirestore.getInstance();
+        viewModelMapFragment = ViewModelProviders.of(this).get(MapFragmentViewModel.class);
+        listOpinions = new ArrayList<>();
+        listBanios = new ArrayList<>();
+        recoverOpinions();
+        recoverBaths();
+        observeOpinions();
+        observeBaths();
+
         return inflater.inflate(R.layout.fragment_map, container, false);
 //        rootView = inflater.inflate(R.layout.fragment_map, container, false);
 //        return rootView;
+
+
     }
 
     @Override
@@ -121,7 +181,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
         }*/
         mMapView = ViewCompat.requireViewById(requireView(), R.id.map);
 
-        if(MainActivity.isConnected()) {
+        if (MainActivity.isConnected()) {
             if (mMapView != null) {
                 mMapView.onCreate(savedInstanceState);
                 mMapView.onResume(); // Necesario para obtener el mapa para mostrar inmediatamente
@@ -138,9 +198,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
         setupViews();
     }
 
+    private void observeBaths() {
+        viewModelMapFragment.getBaniosLiveData().observe(getViewLifecycleOwner(), banios -> {
+            listBanios = banios;
+            updateBaths();
+        });
+    }
+
+    private void observeOpinions() {
+        viewModelMapFragment.getOpinionsLiveData().observe(getViewLifecycleOwner(), opinions -> {
+            listOpinions = opinions;
+            updateBaths();
+        });
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
     }
 
     /* private void observeConexion() throws InterruptedException {
@@ -150,7 +225,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
     }*/
 
     private void setupViews() {
-        database = FirebaseFirestore.getInstance();
         btnAddNewBath = ViewCompat.requireViewById(getView(), R.id.map_btnAddBath);
 //        map_lblDireccion = ViewCompat.requireViewById(getView(), R.id.map_lblDireccion);
         lblMore = ViewCompat.requireViewById(requireView(), R.id.wind_lblMore);
@@ -189,19 +263,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
     //Implementados los métodos de YESNODIALOG
     @Override
     public void onPositiveButtonClick(DialogInterface dialog) {
-        database.collection("banios").get().addOnCompleteListener(task -> {
-            int last = -1;
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    if (Integer.parseInt(document.getId()) > last) {
-                        last = Integer.parseInt(document.getId());
-                    }
-                }
-                lastID = String.valueOf(last + 1);
-            } else {
-                Log.d("", "Error getting documents.", task.getException());
-            }
-        });
+        getLastBathID();
         Geocoder geocoder = new Geocoder(getContext());
         String direccion = "";
         try {
@@ -217,22 +279,33 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
         newBath.put("longitud", locationClickMap.longitude);
         newBath.put("puntuacion", 0);
 //        database.collection("banios").document(lastID).set(newBath);
-        database.collection("banios").document(lastID).set(newBath).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("", "DocumentSnapshot successfully written!");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("", "Error writing document", e);
-            }
-        });
+        database.collection("banios").document(lastID).set(newBath)
+                .addOnSuccessListener(aVoid -> Log.d("", "DocumentSnapshot successfully written!"))
+                .addOnFailureListener(e -> Log.d("", "Error writing document", e));
 
+        navigateToOpinion();
+    }
 
+    private void navigateToOpinion() {
         Bundle arguments = new Bundle();
         arguments.putString("new_bath", lastID);
         navController.navigate(R.id.action_mapFragment_to_opinionFragment, arguments);
+    }
+
+    private void getLastBathID() {
+        database.collection("banios").get().addOnCompleteListener(task -> {
+            int last = -1;
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    if (Integer.parseInt(document.getId()) > last) {
+                        last = Integer.parseInt(document.getId());
+                    }
+                }
+                lastID = String.valueOf(last + 1);
+            } else {
+                Log.d("", "Error getting documents.", task.getException());
+            }
+        });
     }
 
     @Override
@@ -246,7 +319,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         switch (requestCode) {
             case RQ_PERMISOS: {
                 // Si se cancela la petición, el array de resultado estará vacío.
@@ -315,7 +389,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
         }
         //Comprueba si hay conexión !!!!!!!!!!
         if (MainActivity.isConnected()) {
-            recoverBaths();
+            setupBaths();
             setupMarkersListener();
             //readDatabase();
         } else {
@@ -351,7 +425,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
 
                     cl_window.setVisibility(View.INVISIBLE);
 
-                    if(TextUtils.equals(direccion, "")) {
+                    if (TextUtils.equals(direccion, "")) {
                         if (marker != null) {
                             marker.remove();
                         }
@@ -371,13 +445,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
                 }
             }
         });
-
-
     }
 
     private void setupMarkersListener() {
         mGoogleMap.setOnMarkerClickListener(marker -> {
-            marker.getTag();
+//            marker.getTag();
             if (this.marker != null) {
                 this.marker.remove();
             }
@@ -414,7 +486,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
         });
     }
 
-    private void recoverBaths() {
+    private void setupBaths() {
         database.collection("banios").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

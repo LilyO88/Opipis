@@ -10,16 +10,18 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/cl_opinion">
 
         <TextView
             android:id="@+id/no_lblDate"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:text="Fecha de la visita"
+            android:text="Fecha de visita"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toStartOf="@+id/no_txtDate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/no_lblUnisex" />
 
@@ -187,9 +189,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:isIndicator="false"
             app:layout_constraintBottom_toBottomOf="@+id/no_lblSize"
             app:layout_constraintEnd_toEndOf="parent"
-            android:isIndicator="false"
             app:layout_constraintTop_toTopOf="@+id/no_lblSize" />
 
         <TextView
@@ -233,14 +235,18 @@
 
         <EditText
             android:id="@+id/no_txtDate"
-            android:layout_width="195dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
             android:layout_marginEnd="16dp"
             android:ems="10"
+            android:focusable="false"
             android:inputType="date"
+            android:textAlignment="textEnd"
             app:layout_constraintBottom_toBottomOf="@+id/no_lblDate"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/no_ratSize"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/no_lblDate"
             app:layout_constraintTop_toTopOf="@+id/no_lblDate" />
 
         <EditText
@@ -253,6 +259,7 @@
             android:ems="10"
             android:gravity="start|top"
             android:inputType="textMultiLine"
+            android:imeOptions="actionDone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/no_lblComment" />
@@ -262,7 +269,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="16dp"
             android:text="Guardar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -273,6 +280,7 @@
             android:id="@+id/no_btnCancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
             android:text="Cancelar"
             app:layout_constraintEnd_toStartOf="@+id/no_btnSave"
