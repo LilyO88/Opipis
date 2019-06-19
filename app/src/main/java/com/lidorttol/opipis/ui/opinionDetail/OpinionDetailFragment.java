@@ -1,32 +1,31 @@
-package com.lidorttol.opipis.ui.opinionList;
+package com.lidorttol.opipis.ui.opinionDetail;
 
 
-import android.graphics.Path;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.lidorttol.opipis.R;
 import com.lidorttol.opipis.data.Banio;
 import com.lidorttol.opipis.data.Opinion;
+import com.lidorttol.opipis.ui.opinionList.OpinionListFragmentAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,9 +37,11 @@ public class OpinionDetailFragment extends Fragment {
 
 
     private final String ID_BANIO = "id_banio";
-    private final String NUMOPINIONS = "num_opinions";
 
     private String id_banio;
+//    private OpinionListFragmentAdapter listAdapter;
+    private NavController navController;
+
 
     private Banio banioParam;
     private FirebaseFirestore database;
@@ -48,7 +49,7 @@ public class OpinionDetailFragment extends Fragment {
     private TextView lblTitle;
     private RatingBar ratGlobal;
     private TextView lblNumOpinions;
-    private List<Opinion> listOpinions;
+//    private List<Opinion> listOpinions;
     private RatingBar ratCleaning;
     private RatingBar ratSize;
     private TextView yesLatch;
@@ -59,6 +60,10 @@ public class OpinionDetailFragment extends Fragment {
     private TextView noDisabled;
     private TextView yesUnisex;
     private TextView noUnisex;
+    private RecyclerView rvOpinions;
+    private TextView txtAddOpinion;
+    private ImageView imgAddOpinion;
+    private TextView lblLookOpinions;
 
     public OpinionDetailFragment() {
         // Required empty public constructor
@@ -74,6 +79,14 @@ public class OpinionDetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        viewModelOpinionDetail = ViewModelProviders.of(this).get(OpinionDetailFragmentViewModel.class);
+        navController = NavHostFragment.findNavController(OpinionDetailFragment.this);
+
 
         Objects.requireNonNull(getArguments());
         id_banio = getArguments().getString(ID_BANIO);
@@ -81,12 +94,17 @@ public class OpinionDetailFragment extends Fragment {
         database = FirebaseFirestore.getInstance();
 
         banioParam = new Banio();
-        listOpinions = new ArrayList<>();
+//        listOpinions = new ArrayList<>();
+        setupViews();
 
         if (id_banio != null) {
             recoverBath(id_banio);
             recoverOpinions(id_banio);
         }
+
+        observeBanio();
+        observeNumOpinions();
+        observeListOpinions();
     }
 
     private void recoverOpinions(String id_banio) {
@@ -100,23 +118,66 @@ public class OpinionDetailFragment extends Fragment {
                     }
                 });
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        viewModelOpinionDetail = ViewModelProviders.of(this).get(OpinionDetailFragmentViewModel.class);
-        observeBanio();
-        observeNumOpinions();
-        observeListOpinions();
-        setupViews();
-    }
-
     private void observeListOpinions() {
         viewModelOpinionDetail.getListOpinionsLiveData().observe(getViewLifecycleOwner(), listOpiniones -> {
-            listOpinions = listOpiniones;
+//            listAdapter.submitList(listOpiniones);
+//            listAdapter.notifyDataSetChanged();
             makeAverage(listOpiniones);
         });
     }
+
+
+
+    private void setupViews() {
+        //Cabecera
+        lblTitle = ViewCompat.requireViewById(requireView(), R.id.list_lblDirection);
+        ratGlobal = ViewCompat.requireViewById(requireView(), R.id.data_ratOpinion);
+        lblNumOpinions = ViewCompat.requireViewById(requireView(), R.id.data_lblNumOpinion);
+        //General
+        ratCleaning = ViewCompat.requireViewById(requireView(), R.id.data_ratCleaning);
+        ratSize = ViewCompat.requireViewById(requireView(), R.id.data_ratSize);
+        yesLatch = ViewCompat.requireViewById(requireView(), R.id.data_lblSiLatch);
+        noLatch = ViewCompat.requireViewById(requireView(), R.id.data_lblNoLatch);
+        yesPaper = ViewCompat.requireViewById(requireView(), R.id.data_lblSiPaper);
+        noPaper = ViewCompat.requireViewById(requireView(), R.id.data_lblNoPaper);
+        yesDisabled = ViewCompat.requireViewById(requireView(), R.id.data_lblSiDisabled);
+        noDisabled = ViewCompat.requireViewById(requireView(), R.id.data_lblNoDisabled);
+        yesUnisex = ViewCompat.requireViewById(requireView(), R.id.data_lblSiUnisex);
+        noUnisex = ViewCompat.requireViewById(requireView(), R.id.data_lblNoUnisex);
+//        rvOpinions = ViewCompat.requireViewById(requireView(), R.id.list_rvOpinions);
+
+        lblLookOpinions = ViewCompat.requireViewById(getView(), R.id.op_goOpinions);
+
+        txtAddOpinion = ViewCompat.requireViewById(requireView(), R.id.add_lblAddOpinion);
+        imgAddOpinion = ViewCompat.requireViewById(requireView(), R.id.add_imgAddOpinion);
+
+        setupListeners();
+//        setupRecyclerView();
+    }
+
+    private void setupListeners() {
+        txtAddOpinion.setOnClickListener(v -> {
+            Bundle arguments = new Bundle();
+            arguments.putString("id_banio", id_banio);
+            arguments.putBoolean("new_bath", false);
+            navController.navigate(R.id.action_detailFragment_to_opinionFragment, arguments);
+        });
+
+        lblLookOpinions .setOnClickListener(v -> {
+            Bundle arguments = new Bundle();
+            arguments.putString("id_banio", id_banio);
+            navController.navigate(R.id.action_detailFragment_to_opinionListFragment, arguments);
+        });
+    }
+
+   /* private void setupRecyclerView() {
+        listAdapter = new OpinionListFragmentAdapter();
+
+        rvOpinions.setHasFixedSize(true);
+        rvOpinions.setLayoutManager(new GridLayoutManager(requireContext(), 1));
+        rvOpinions.setNestedScrollingEnabled(false); //!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        rvOpinions.setAdapter(listAdapter);
+    }*/
 
     private void makeAverage(List<Opinion> listOpiniones) {
         averageCleaning(listOpiniones);
@@ -214,25 +275,6 @@ public class OpinionDetailFragment extends Fragment {
         });
     }
 
-    private void setupViews() {
-        //Cabecera
-        lblTitle = ViewCompat.requireViewById(getView(), R.id.data_lblDirection);
-        ratGlobal = ViewCompat.requireViewById(getView(), R.id.data_ratOpinion);
-        lblNumOpinions = ViewCompat.requireViewById(getView(), R.id.data_lblNumOpinion);
-        //General
-        ratCleaning = ViewCompat.requireViewById(getView(), R.id.data_ratCleaning);
-        ratSize = ViewCompat.requireViewById(getView(), R.id.data_ratSize);
-        yesLatch = ViewCompat.requireViewById(getView(), R.id.data_lblSiLatch);
-        noLatch = ViewCompat.requireViewById(getView(), R.id.data_lblNoLatch);
-        yesPaper = ViewCompat.requireViewById(getView(), R.id.data_lblSiPaper);
-        noPaper = ViewCompat.requireViewById(getView(), R.id.data_lblNoPaper);
-        yesDisabled = ViewCompat.requireViewById(getView(), R.id.data_lblSiDisabled);
-        noDisabled = ViewCompat.requireViewById(getView(), R.id.data_lblNoDisabled);
-        yesUnisex = ViewCompat.requireViewById(getView(), R.id.data_lblSiUnisex);
-        noUnisex = ViewCompat.requireViewById(getView(), R.id.data_lblNoUnisex);
-
-    }
-
 
     private void observeBanio() {
         viewModelOpinionDetail.getBanioParam().observe(getViewLifecycleOwner(), banio -> {
@@ -245,10 +287,10 @@ public class OpinionDetailFragment extends Fragment {
         database.collection("banios").document(new_bath)
                 .get().addOnSuccessListener(documentSnapshot -> {
             banioParam = documentSnapshot.toObject(Banio.class);
-            viewModelOpinionDetail.setBanioParam(banioParam);
-            viewModelOpinionDetail.setGlobalParam(banioParam.getPuntuacion());
+            viewModelOpinionDetail.setBanioParam(documentSnapshot.toObject(Banio.class));
+            viewModelOpinionDetail.setGlobalParam(documentSnapshot.toObject(Banio.class).getPuntuacion());
         }).addOnFailureListener(e -> {
         });
     }
-    
+
 }

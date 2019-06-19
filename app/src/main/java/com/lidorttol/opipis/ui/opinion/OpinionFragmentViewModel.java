@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.lidorttol.opipis.data.Banio;
@@ -28,7 +29,7 @@ public class OpinionFragmentViewModel extends AndroidViewModel {
         lastOpinionIdLD = new MutableLiveData<>();
     }
 
-    public MutableLiveData<Banio> getBanioParam() {
+    public LiveData<Banio> getBanioParam() {
         return banioParam;
     }
 
@@ -101,7 +102,7 @@ public class OpinionFragmentViewModel extends AndroidViewModel {
         this.stateComment = stateComment;
     }
 
-    public MutableLiveData<String> getLastOpinionIdLD() {
+    public LiveData<String> getLastOpinionIdLD() {
         return lastOpinionIdLD;
     }
 

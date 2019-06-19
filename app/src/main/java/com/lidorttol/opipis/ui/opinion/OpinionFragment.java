@@ -25,15 +25,9 @@ import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.lidorttol.opipis.R;
 import com.lidorttol.opipis.data.Banio;
 import com.lidorttol.opipis.data.Opinion;
@@ -43,7 +37,6 @@ import com.lidorttol.opipis.utils.ValidationUtils;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -85,12 +78,14 @@ public class OpinionFragment extends Fragment {
     private OpinionFragmentViewModel viewModelOpinion;
 
     private boolean btnSaveClicked;
-    private String new_bath;
+    private String bath;
     private Banio banio;
     private ConstraintLayout cl_opinion;
     private String lastOpinionID;
     private Map<String, Object> new_opinion;
     private List<Opinion> listOpinions;
+    private boolean isNewBath;
+    private boolean cancelClicked;
 
 
     public OpinionFragment() {
@@ -101,12 +96,13 @@ public class OpinionFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            new_bath = getArguments().getString("new_bath");
+            bath = getArguments().getString("id_banio");
+            isNewBath = getArguments().getBoolean("new_bath");
             database = FirebaseFirestore.getInstance();
             banio = new Banio();
 
-            if (new_bath != null) {
-                recoverBath(new_bath);
+            if (bath != null) {
+                recoverBath(bath);
             }
             getLastOpinionID();
         }
@@ -178,6 +174,7 @@ public class OpinionFragment extends Fragment {
         txtComment = ViewCompat.requireViewById(getView(), R.id.no_txtComment);
         btnCancel = ViewCompat.requireViewById(getView(), R.id.no_btnCancel);
         btnSave = ViewCompat.requireViewById(getView(), R.id.no_btnSave);
+        cancelClicked = false;
 
         cl_opinion = ViewCompat.requireViewById(getView(), R.id.cl_opinion);
 
@@ -186,7 +183,6 @@ public class OpinionFragment extends Fragment {
 
         //Teclado acción
         txtComment.setOnEditorActionListener((v, actionId, event) -> {
-            btnSaveClicked = true;
             KeyboardUtils.hideSoftKeyboard(requireActivity());
             save();
             return false;
@@ -228,12 +224,11 @@ public class OpinionFragment extends Fragment {
     private void setListeners() {
         //Botón SAVE
         btnSave.setOnClickListener(v -> {
-            btnSaveClicked = true;
             save();
         });
         //Botón CANCEL
         btnCancel.setOnClickListener(v -> {
-            deleteBath();
+            cancelClicked = true;
             navController.popBackStack();
 
         });
@@ -246,6 +241,7 @@ public class OpinionFragment extends Fragment {
             Snackbar.make(cl_opinion, "Revise los campos erróneos", Snackbar.LENGTH_LONG).show();
         } else {
             //Guardar la opinión
+            btnSaveClicked = true;
             saveOpinion();
             navController.popBackStack();
         }
@@ -263,7 +259,7 @@ public class OpinionFragment extends Fragment {
 
     private void buildNewOpinion() {
         new_opinion = new HashMap<>();
-        new_opinion.put("id_banio", new_bath);
+        new_opinion.put("id_banio", bath);
         new_opinion.put("id_opinion", lastOpinionID);
         //Falta iniciar sesión y recuperar usuario
         new_opinion.put("usuario", "QKwTmxCMGLfb6n43sCf9SIxkh052");
@@ -459,8 +455,8 @@ public class OpinionFragment extends Fragment {
 
     //Borrar baño en el caso de no querer dejar una opinión
     private void deleteBath() {
-        if (new_bath != null) {
-            database.collection("banios").document(new_bath)
+        if (bath != null) {
+            database.collection("banios").document(bath)
                     .delete()
                     .addOnSuccessListener(aVoid -> Log.d("", "DocumentSnapshot successfully deleted!"))
                     .addOnFailureListener(e -> Log.d("", "Error deleting document", e));
@@ -468,17 +464,17 @@ public class OpinionFragment extends Fragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        if (!btnSaveClicked) {
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (!btnSaveClicked && isNewBath && !cancelClicked) {
             deleteBath();
         }
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (!btnSaveClicked) {
+    public void onDetach() {
+        super.onDetach();
+        if (!btnSaveClicked && isNewBath && !cancelClicked) {
             deleteBath();
         }
     }

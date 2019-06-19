@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.lidorttol.opipis.data.Banio;
@@ -22,7 +23,7 @@ public class MapFragmentViewModel extends AndroidViewModel {
         baniosLiveData = new MutableLiveData<>();
     }
 
-    public MutableLiveData<List<Opinion>> getOpinionsLiveData() {
+    public LiveData<List<Opinion>> getOpinionsLiveData() {
         return opinionsLiveData;
     }
 
@@ -30,7 +31,7 @@ public class MapFragmentViewModel extends AndroidViewModel {
         this.opinionsLiveData.postValue(opinions);
     }
 
-    public MutableLiveData<List<Banio>> getBaniosLiveData() {
+    public LiveData<List<Banio>> getBaniosLiveData() {
         return baniosLiveData;
     }
 

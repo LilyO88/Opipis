@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.lidorttol.opipis.ui.opinionList.OpinionDetailFragment"
-        android:label="fragment_detail"
-        tools:layout="@layout/fragment_opinion_detail" >
+        android:name="com.lidorttol.opipis.ui.opinionDetail.OpinionDetailFragment"
+        android:label="Resumen opiniones"
+        tools:layout="@layout/fragment_opinion_detail">
         <action
             android:id="@+id/action_detailFragment_to_opinionFragment"
             app:destination="@id/opinionFragment" />
@@ -19,8 +19,10 @@
         <argument
             android:name="id_banio"
             app:argType="string" />
-        <argument
-            android:name="global" />
+        <argument android:name="global" />
+        <action
+            android:id="@+id/action_detailFragment_to_opinionListFragment"
+            app:destination="@id/opinionListFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -37,14 +39,11 @@
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.lidorttol.opipis.ui.map.MapFragment"
-        android:label="fragment_map"
-        tools:layout="@layout/fragment_map" >
+        android:label="Opipis"
+        tools:layout="@layout/fragment_map">
         <action
             android:id="@+id/action_mapFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
-        <action
-            android:id="@+id/action_mapFragment_to_addBathFragment"
-            app:destination="@id/addBathFragment" />
         <action
             android:id="@+id/action_mapFragment_to_opinionFragment"
             app:destination="@id/opinionFragment" />
@@ -77,17 +76,23 @@
         tools:layout="@layout/fragment_opinion" >
         <argument
             android:name="id_banio"
-            app:argType="string"
-            app:nullable="true" />
+            app:argType="string" />
+        <argument
+            android:name="new_bath"
+            app:argType="boolean" />
     </fragment>
-    <fragment
-        android:id="@+id/addBathFragment"
-        android:name="com.lidorttol.opipis.ui.AddBathFragment"
-        android:label="fragment_add_bath"
-        tools:layout="@layout/fragment_add_bath" />
     <fragment
         android:id="@+id/noInternetFragment"
         android:name="com.lidorttol.opipis.ui.NoInternetFragment"
         android:label="fragment_no_internet"
         tools:layout="@layout/fragment_no_internet" />
+    <fragment
+        android:id="@+id/opinionListFragment"
+        android:name="com.lidorttol.opipis.ui.opinionList.OpinionListFragment"
+        android:label="Opiniones de usuarios"
+        tools:layout="@layout/fragment_opinion_list">
+        <argument
+            android:name="id_banio"
+            app:argType="string" />
+    </fragment>
 </navigation>

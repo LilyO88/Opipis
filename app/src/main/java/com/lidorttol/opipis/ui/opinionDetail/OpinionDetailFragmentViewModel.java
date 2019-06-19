@@ -1,9 +1,10 @@
-package com.lidorttol.opipis.ui.opinionList;
+package com.lidorttol.opipis.ui.opinionDetail;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.lidorttol.opipis.data.Banio;
@@ -26,7 +27,7 @@ public class OpinionDetailFragmentViewModel extends AndroidViewModel {
         listOpinionsLiveData = new MutableLiveData<>();
     }
 
-    public MutableLiveData<Banio> getBanioParam() {
+    public LiveData<Banio> getBanioParam() {
         return banioParam;
     }
 
@@ -34,7 +35,7 @@ public class OpinionDetailFragmentViewModel extends AndroidViewModel {
         this.banioParam.postValue(banio);
     }
 
-    public MutableLiveData<Double> getGlobalParam() {
+    public LiveData<Double> getGlobalParam() {
         return globalParam;
     }
 
@@ -42,7 +43,7 @@ public class OpinionDetailFragmentViewModel extends AndroidViewModel {
         this.globalParam.postValue(global);
     }
 
-    public MutableLiveData<Integer> getNumOpinionsParam() {
+    public LiveData<Integer> getNumOpinionsParam() {
         return numOpinionsParam;
     }
 
@@ -50,7 +51,7 @@ public class OpinionDetailFragmentViewModel extends AndroidViewModel {
         this.numOpinionsParam.postValue(numOpinions);
     }
 
-    public MutableLiveData<List<Opinion>> getListOpinionsLiveData() {
+    public LiveData<List<Opinion>> getListOpinionsLiveData() {
         return listOpinionsLiveData;
     }
 

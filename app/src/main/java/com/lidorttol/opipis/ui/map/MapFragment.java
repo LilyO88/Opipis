@@ -288,7 +288,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
 
     private void navigateToOpinion() {
         Bundle arguments = new Bundle();
-        arguments.putString("new_bath", lastID);
+        arguments.putString("id_banio", lastID);
+        arguments.putBoolean("new_bath", true);
         navController.navigate(R.id.action_mapFragment_to_opinionFragment, arguments);
     }
 
@@ -482,6 +483,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
         lblMore.setOnClickListener(v -> {
             Bundle arguments = new Bundle();
             arguments.putString("id_banio", banio.getId_banio());
+            arguments.putBoolean("new_bath", true);
             navController.navigate(R.id.action_mapFragment_to_detailFragment, arguments); //CAMBIAR EL DESTINO Y AÑADIR EL PARÁMETRO DE ID DEL BAÑO A MOSTRAR
         });
     }
