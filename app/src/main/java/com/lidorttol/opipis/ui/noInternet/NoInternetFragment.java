@@ -1,10 +1,8 @@
-package com.lidorttol.opipis.ui;
+package com.lidorttol.opipis.ui.noInternet;
 
 
-import android.content.Context;
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
@@ -14,7 +12,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -31,7 +28,7 @@ public class NoInternetFragment extends Fragment {
 
 
     private Button btnRetry;
-    private MainActivityViewModel viewModelActivityMain;
+//    private MainActivityViewModel viewModelActivityMain;
     private NavController navController;
     private Button btnExit;
 //    private boolean connected;
@@ -55,7 +52,7 @@ public class NoInternetFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModelActivityMain = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
+//        viewModelActivityMain = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
 /*        try {
             observeConexion();
         } catch (InterruptedException e) {

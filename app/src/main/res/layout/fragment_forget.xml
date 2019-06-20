@@ -5,32 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.noInternet.NoInternetFragment"
-    android:id="@+id/cl_noInternet">
+    tools:context=".ui.profile.forget.ForgetFragment"
+    android:id="@+id/cl_forget">
 
     <Button
-        android:id="@+id/ni_btnExit"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:background="#C058D3"
-        android:paddingLeft="25sp"
-        android:paddingTop="10sp"
-        android:paddingRight="25sp"
-        android:paddingBottom="10sp"
-        android:text="SALIR DE LA APP"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ni_btnRetry" />
-
-    <Button
-        android:id="@+id/ni_btnRetry"
+        android:id="@+id/for_btnForget"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -41,17 +20,34 @@
         android:paddingTop="10sp"
         android:paddingRight="25sp"
         android:paddingBottom="10sp"
-        android:text="REINTENTAR"
+        android:text="ENVIAR"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ni_lblInternet" />
+        app:layout_constraintTop_toBottomOf="@+id/for_txtEmail" />
+
+    <TextView
+        android:id="@+id/for_lblEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="16dp"
+        android:text="Introduzca el email correspondiente de la cuenta de la que desea recuperar la contraseña"
+        android:textAlignment="textStart"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@android:color/secondary_text_light"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/for_logo" />
 
     <ImageView
-        android:id="@+id/ni_logo"
+        android:id="@+id/for_logo"
         android:layout_width="136dp"
         android:layout_height="173dp"
         android:layout_marginStart="8dp"
@@ -62,18 +58,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/ni_lblInternet"
+    <EditText
+        android:id="@+id/for_txtEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="40dp"
-        android:text="No hay conexión a internet"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="24sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="Introduzca email"
+        android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ni_logo" />
+        app:layout_constraintTop_toBottomOf="@+id/for_lblEmail" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

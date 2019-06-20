@@ -8,14 +8,11 @@
         <item
             android:id="@+id/mapFragment"
             android:title="@string/mapTitle"/>
-        <item
-            android:id="@+id/profileFragment"
-            android:title="@string/profileTitle"/>
     </group>
     <group
         android:checkableBehavior="single">
         <item
-            android:id="@+id/closeSesion"
-            android:title="@string/closeSesion"/>
+            android:id="@+id/accountFragment"
+            android:title="Cuenta"/>
     </group>
 </menu>

@@ -5,12 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ProfileFragment"
+    tools:context=".ui.profile.edit.EditProfileFragment"
     android:layout_margin="@dimen/margin8dp"
-    android:id="@+id/cl_profile">
+    android:id="@+id/cl_editProfile">
 
     <TextView
-        android:id="@+id/prof_lblPassword"
+        android:id="@+id/prof_lblOldPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -21,25 +21,26 @@
         app:layout_constraintTop_toBottomOf="@+id/prof_txtEmail" />
 
     <EditText
-        android:id="@+id/prof_txtPassword"
+        android:id="@+id/prof_txtOldPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:hint="Introduzca contraseña"
+        android:hint="Introduzca contraseña actual"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prof_lblPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/prof_lblOldPassword" />
 
     <EditText
         android:id="@+id/prof_txtEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:focusable="false"
         android:hint="Introduzca email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -73,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:hint="Introduzca nombre"
         app:layout_constraintEnd_toEndOf="parent"
@@ -86,13 +87,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:text="GUARDAR CAMBIOS"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prof_txtPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/prof_txtOldPassword" />
 
     <TextView
         android:id="@+id/prof_lblTitle"

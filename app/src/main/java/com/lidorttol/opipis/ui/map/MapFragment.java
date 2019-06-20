@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -44,6 +45,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -68,6 +71,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
     };
     private static final String TAG_DIALOG_FRAGMENT = "TAG_DIALOG_FRAGMENT";
     private static final int RC_DIALOG_FRAGMENT = 1;
+    private static final String TAG_DIALOG_FRAGMENT2 = "TAG_DIALOG_FRAGMENT2";
+    private static final int RC_DIALOG_FRAGMENT2 = 2;
 
     private FirebaseFirestore database;
     private NavController navController;
@@ -92,6 +97,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
     private String lastID;
     private List<Opinion> listOpinions;
     private List<Banio> listBanios;
+    private FirebaseAuth fAuth;
 
 
     //    View rootView;
@@ -152,7 +158,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
 
-
+        fAuth = FirebaseAuth.getInstance();
         database = FirebaseFirestore.getInstance();
         viewModelMapFragment = ViewModelProviders.of(this).get(MapFragmentViewModel.class);
         listOpinions = new ArrayList<>();
@@ -246,8 +252,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
         }*/
 
         btnAddNewBath.setOnClickListener(v -> {
-            showConfirmationDialog();
+            FirebaseUser user = fAuth.getCurrentUser();
+            if(user != null) { //Esta logueado
+                showConfirmationDialog();
+            } else {
+                showDialog();
+            }
         });
+    }
+
+    private void showDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+//        Dialo dialogFragment = YesNoDialogFragment.newInstance(
+//                "Necesario login",
+//                "Para poder añadir un nuevo baño se necesita estar logueado en la aplicación." +
+//                        "En caso afirmativo, a continuación deberá dejar la primera opinión.", "Aceptar",
+//                "Cancelar", this, RC_DIALOG_FRAGMENT2);
+//        dialogFragment.show(this.getFragmentManager(), TAG_DIALOG_FRAGMENT2);
     }
 
     //Configuración del cuadro de diálogo

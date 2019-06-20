@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         appbarConfiguration = new AppBarConfiguration
-                .Builder(R.id.mapFragment, R.id.profileFragment)
+                .Builder(R.id.mapFragment, R.id.accountFragment)
                 .setDrawerLayout(drawerLayout)
                 .build();
 

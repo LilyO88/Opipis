@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/margin8dp"
-    tools:context=".ui.RegisterFragment">
+    tools:context=".ui.profile.register.RegisterFragment">
 
 
     <TextView

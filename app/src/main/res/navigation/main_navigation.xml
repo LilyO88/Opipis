@@ -26,15 +26,18 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.lidorttol.opipis.ui.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        android:name="com.lidorttol.opipis.ui.profile.login.LoginFragment"
+        android:label="Entrar"
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
         <action
             android:id="@+id/action_loginFragment_to_opinionFragment"
             app:destination="@id/opinionFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_forgetFragment"
+            app:destination="@id/forgetFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
@@ -52,19 +55,10 @@
             app:destination="@id/noInternetFragment" />
     </fragment>
     <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.lidorttol.opipis.ui.ProfileFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
-        <action
-            android:id="@+id/action_profileFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/registerFragment"
-        android:name="com.lidorttol.opipis.ui.RegisterFragment"
-        android:label="fragment_register"
-        tools:layout="@layout/fragment_register" >
+        android:name="com.lidorttol.opipis.ui.profile.register.RegisterFragment"
+        android:label="Registro"
+        tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_registerFragment_to_opinionFragment"
             app:destination="@id/opinionFragment" />
@@ -72,8 +66,8 @@
     <fragment
         android:id="@+id/opinionFragment"
         android:name="com.lidorttol.opipis.ui.opinion.OpinionFragment"
-        android:label="fragment_opinion"
-        tools:layout="@layout/fragment_opinion" >
+        android:label="Nueva opinión"
+        tools:layout="@layout/fragment_opinion">
         <argument
             android:name="id_banio"
             app:argType="string" />
@@ -83,8 +77,8 @@
     </fragment>
     <fragment
         android:id="@+id/noInternetFragment"
-        android:name="com.lidorttol.opipis.ui.NoInternetFragment"
-        android:label="fragment_no_internet"
+        android:name="com.lidorttol.opipis.ui.noInternet.NoInternetFragment"
+        android:label="Sin conexión"
         tools:layout="@layout/fragment_no_internet" />
     <fragment
         android:id="@+id/opinionListFragment"
@@ -95,4 +89,24 @@
             android:name="id_banio"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/forgetFragment"
+        android:name="com.lidorttol.opipis.ui.profile.forget.ForgetFragment"
+        android:label="Restaurar contraseña"
+        tools:layout="@layout/fragment_forget" />
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.lidorttol.opipis.ui.profile.edit.EditProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.lidorttol.opipis.ui.profile.AccountFragment"
+        android:label="Opciones de cuenta"
+        tools:layout="@layout/fragment_account" />
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.lidorttol.opipis.ui.profile.change.ChangePasswordFragment"
+        android:label="Cambiar contraseña"
+        tools:layout="@layout/fragment_change_password" />
 </navigation>
