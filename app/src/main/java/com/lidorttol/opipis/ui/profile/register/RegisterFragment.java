@@ -170,7 +170,7 @@ public class RegisterFragment extends Fragment {
 
     private void addNameUser(FirebaseUser user) {
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                .setDisplayName(txtName.getText().toString())  //Nuevo nombre
+                .setDisplayName(txtName.getText().toString().trim())  //Nuevo nombre
                 .build();
         user.updateProfile(profileUpdates)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -185,9 +185,9 @@ public class RegisterFragment extends Fragment {
 
     private void saveUser(FirebaseUser user) {
         Map<String, Object> usuario = new HashMap<>();
-        usuario.put("nombre", txtName.getText().toString());
-        usuario.put("id_usuario", user.getUid());
-        usuario.put("email", txtEmail.getText().toString());
+        usuario.put("nombre", txtName.getText().toString().trim());
+        usuario.put("id_usuario", user.getUid().trim());
+        usuario.put("email", txtEmail.getText().toString().trim());
 
         database.collection("usuarios").document(user.getUid()).set(usuario)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -227,11 +227,11 @@ public class RegisterFragment extends Fragment {
     }
 
     private void checkText(TextView textView, EditText editText) {
-        enabledDisabledField(textView, ValidationUtils.isValidEmail(editText.getText().toString()));
+        enabledDisabledField(textView, ValidationUtils.isValidString(editText.getText().toString().trim()));
     }
 
     private void checkEmail(TextView textView, EditText editText) {
-        enabledDisabledField(textView, ValidationUtils.isValidString(editText.getText().toString()));
+        enabledDisabledField(textView, ValidationUtils.isValidEmail(editText.getText().toString().trim()));
     }
 
     private void checkCurrentView() {

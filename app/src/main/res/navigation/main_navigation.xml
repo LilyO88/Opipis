@@ -97,7 +97,7 @@
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.lidorttol.opipis.ui.profile.edit.EditProfileFragment"
-        android:label="fragment_edit_profile"
+        android:label="Editar perfil"
         tools:layout="@layout/fragment_edit_profile" />
     <fragment
         android:id="@+id/accountFragment"

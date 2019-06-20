@@ -113,13 +113,13 @@ public class LoginFragment extends Fragment {
         lblForget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navController.navigate(R.id.forgetFragment);
+                navController.navigate(R.id.action_loginFragment_to_forgetFragment);
             }
         });
         lblRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                navController.navigate(R.id.action_loginFragment_to_registerFragment);
             }
         });
     }
