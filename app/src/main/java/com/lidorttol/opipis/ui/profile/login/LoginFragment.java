@@ -113,7 +113,7 @@ public class LoginFragment extends Fragment {
         lblForget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog();
+                navController.navigate(R.id.forgetFragment);
             }
         });
         lblRegister.setOnClickListener(new View.OnClickListener() {
@@ -124,27 +124,20 @@ public class LoginFragment extends Fragment {
         });
     }
 
-    private void showDialog() {
-        /*YesNoDialogFragment dialogFragment = YesNoDialogFragment.newInstance(
-                "Recuperar la contraseña",
-                "¿Estás seguro de que quieres agregar un nuevo baño en el lugar indicado? " +
-                        "En caso afirmativo, a continuación deberá dejar la primera opinión.", "Aceptar",
-                "Cancelar", this, RC_DIALOG_FRAGMENT);
-        dialogFragment.show(this.getFragmentManager(), TAG_DIALOG_FRAGMENT);*/
+    /*private void showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
                 navController.navigate(R.id.forgetFragment);
             }
-        });
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
             }
-        });
+        }).setTitle("Confirmación").setMessage("Está ");
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
+    }*/
 
     private void doLogin() {
         fAuth.signInWithEmailAndPassword(txtEmail.getText().toString().trim(), txtPassword.getText().toString().trim())

@@ -105,14 +105,14 @@ public class ForgetFragment extends Fragment {
     }
 
     public void getNewPassword() {
-        fAuth.sendPasswordResetEmail(txtEmail.getText().toString())
+        fAuth.sendPasswordResetEmail(txtEmail.getText().toString().trim())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d("", "Email sent.");
-                            Snackbar.make(cl_forget, "Se ha enviado un email de " +
-                                    "reestablecimiento de contraseña a su correo", Snackbar.LENGTH_LONG).show();
+                            /*Snackbar.make(cl_forget, "Se ha enviado un email de " +
+                                    "reestablecimiento de contraseña a su correo", Snackbar.LENGTH_LONG).show();*/
                         }
                     }
                 });
@@ -135,7 +135,7 @@ public class ForgetFragment extends Fragment {
     }
 
     private void checkEmail(TextView textView, EditText editText) {
-        enabledDisabledField(textView, ValidationUtils.isValidString(editText.getText().toString()));
+        enabledDisabledField(textView, ValidationUtils.isValidEmail(editText.getText().toString().trim()));
     }
 
     private void checkCurrentView() {

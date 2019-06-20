@@ -267,7 +267,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, YesNoDi
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
             }
-        });
+        }).setTitle("Aviso").setMessage("Debe estar logueado en la aplicación para poder añadir un nuevo baño.");
         AlertDialog dialog = builder.create();
         dialog.show();
 
