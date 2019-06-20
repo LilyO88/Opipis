@@ -55,7 +55,7 @@ public class ChangePasswordFragment extends Fragment {
     private FirebaseFirestore database;
     private TextView lblOldPassword;
     private EditText txtOldPassword;
-    private EditText lblNewPassword;
+    private TextView lblNewPassword;
     private EditText txtNewPassword;
     private TextView lblConfirmPassword;
     private EditText txtConfirmPassword;
@@ -124,8 +124,6 @@ public class ChangePasswordFragment extends Fragment {
             public void onClick(View v) {
                 if (validateAll()) {
                     doUpdate();
-                    Snackbar.make(cl_change, "¡Contraseña actualizada correctamente!", Snackbar.LENGTH_LONG).show();
-                    navController.popBackStack();
                 } else {
                     if(!txtNewPassword.getText().toString().equals(txtConfirmPassword.getText().toString())) { //Contraseñas distintas
                         Snackbar.make(cl_change, "Las contraseñas no coinciden", Snackbar.LENGTH_LONG).show();
@@ -141,20 +139,26 @@ public class ChangePasswordFragment extends Fragment {
         //Autenticar de nuevo para comprobar antigua contraseña
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), txtOldPassword.getText().toString());
+        AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail().trim(), txtOldPassword.getText().toString().trim());
 
         user.reauthenticate(credential)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Log.d("", "User re-authenticated.");
-                        updatePassword(user);
+                        if(task.isSuccessful()) {
+                            Log.d("", "User re-authenticated.");
+                            updatePassword(user);
+                            Snackbar.make(cl_change, "¡Contraseña actualizada correctamente!", Snackbar.LENGTH_LONG).show();
+                            navController.popBackStack();
+                        } else {
+                            Snackbar.make(cl_change, "La contraseña actual no es correcta", Snackbar.LENGTH_LONG).show();
+                        }
                     }
                 });
     }
 
     private void updatePassword(FirebaseUser user) {
-        user.updatePassword(txtNewPassword.getText().toString())
+        user.updatePassword(txtNewPassword.getText().toString().trim())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -188,7 +192,7 @@ public class ChangePasswordFragment extends Fragment {
     }
 
     private void checkText(TextView textView, EditText editText) {
-        enabledDisabledField(textView, ValidationUtils.isValidEmail(editText.getText().toString()));
+        enabledDisabledField(textView, ValidationUtils.isValidString(editText.getText().toString().trim()));
     }
 
     private void checkCurrentView() {
@@ -246,7 +250,7 @@ public class ChangePasswordFragment extends Fragment {
 
     private void setFocusListeners() {
         txtOldPassword.setOnFocusChangeListener((v, hasFocus) -> setBold(lblOldPassword, txtOldPassword));
-        txtNewPassword.setOnFocusChangeListener((v, hasFocus) -> setBold(txtNewPassword, txtNewPassword));
+        txtNewPassword.setOnFocusChangeListener((v, hasFocus) -> setBold(lblNewPassword, txtNewPassword));
         txtConfirmPassword.setOnFocusChangeListener((v, hasFocus) -> setBold(lblConfirmPassword, txtConfirmPassword));
     }
 
