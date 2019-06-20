@@ -186,7 +186,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void checkText(TextView textView, EditText editText) {
-        enabledDisabledField(textView, ValidationUtils.isValidString(editText.getText().toString().trim()));
+        enabledDisabledField(textView, ValidationUtils.isValidPassword(editText.getText().toString().trim()));
     }
 
     private void checkEmail(TextView textView, EditText editText) {

@@ -5,7 +5,6 @@
     android:id="@+id/cl_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E9B9F5"
     tools:context=".ui.profile.login.LoginFragment">
 
     <ImageView
@@ -27,7 +26,6 @@
         android:layout_marginTop="24dp"
         android:text="EMAIL"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.026"
@@ -44,8 +42,6 @@
         android:hint="Introduzca email"
         android:imeOptions="actionNext"
         android:singleLine="true"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_lblEmail" />
@@ -57,7 +53,6 @@
         android:layout_marginTop="8dp"
         android:text="CONTRASEÑA"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.036"
@@ -75,8 +70,6 @@
         android:imeOptions="actionDone"
         android:inputType="textPassword"
         android:singleLine="true"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_lblPassword" />
@@ -88,12 +81,12 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
-        android:text="ENTRAR"
         android:background="#850D9E"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
+        android:text="ENTRAR"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_txtPassword" />

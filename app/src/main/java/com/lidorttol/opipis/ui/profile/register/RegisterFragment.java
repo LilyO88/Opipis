@@ -113,7 +113,7 @@ public class RegisterFragment extends Fragment {
         lblConfirmPassword = ViewCompat.requireViewById(requireView(), R.id.reg_lblPasswordRep);
         txtConfirmPassword = ViewCompat.requireViewById(requireView(), R.id.reg_txtPasswordRep);
 
-        btnRegister = ViewCompat.requireViewById(getView(),R.id.reg_btnRegister);
+        btnRegister = ViewCompat.requireViewById(getView(), R.id.reg_btnRegister);
 
         cl_register = ViewCompat.requireViewById(getView(), R.id.cl_register);
 
@@ -142,7 +142,7 @@ public class RegisterFragment extends Fragment {
                 if (validateAll()) {
                     doRegister();
                 } else {
-                    if(!txtPassword.getText().toString().equals(txtConfirmPassword.getText().toString())) { //Contraseñas distintas
+                    if (!txtPassword.getText().toString().equals(txtConfirmPassword.getText().toString())) { //Contraseñas distintas
                         Snackbar.make(cl_register, "Las contraseñas no coinciden", Snackbar.LENGTH_LONG).show();
                     } else {
                         Snackbar.make(cl_register, "Revise los campos erróneos", Snackbar.LENGTH_LONG).show();
@@ -153,7 +153,7 @@ public class RegisterFragment extends Fragment {
     }
 
     private void doRegister() {
-        fAuth.createUserWithEmailAndPassword(txtEmail.getText().toString(), txtPassword.getText().toString())
+        fAuth.createUserWithEmailAndPassword(txtEmail.getText().toString().trim(), txtPassword.getText().toString().trim())
                 .addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -164,6 +164,8 @@ public class RegisterFragment extends Fragment {
                             //Agregar nombre antes en el usuario
                             addNameUser(user);
                             saveUser(user); //Guardar también en la base de datos como usuario
+                            Snackbar.make(cl_register, "¡Perfil creado correctamente!", Snackbar.LENGTH_LONG).show();
+                            navController.popBackStack();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("", "createUserWithEmail:failure", task.getException());
@@ -172,8 +174,6 @@ public class RegisterFragment extends Fragment {
 
                     }
                 });
-        Snackbar.make(cl_register, "¡Perfil creado correctamente!", Snackbar.LENGTH_LONG).show();
-        navController.popBackStack();
     }
 
     private void addNameUser(FirebaseUser user) {
@@ -199,11 +199,11 @@ public class RegisterFragment extends Fragment {
 
         database.collection("usuarios").document(user.getUid()).set(usuario)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("", "DocumentSnapshot successfully written!");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("", "DocumentSnapshot successfully written!");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.d("", "Error writing document", e);
@@ -242,6 +242,10 @@ public class RegisterFragment extends Fragment {
         enabledDisabledField(textView, ValidationUtils.isValidEmail(editText.getText().toString().trim()));
     }
 
+    private void checkPassword(TextView textView, EditText editText) {
+        enabledDisabledField(textView, ValidationUtils.isValidPassword(editText.getText().toString().trim()));
+    }
+
     private void checkCurrentView() {
         if (getActivity().getCurrentFocus() != null) {
             if (getActivity().getCurrentFocus().getId() == txtEmail.getId()) {
@@ -249,9 +253,9 @@ public class RegisterFragment extends Fragment {
             } else if (getActivity().getCurrentFocus().getId() == txtName.getId()) {
                 checkText(lblName, txtName);
             } else if (getActivity().getCurrentFocus().getId() == txtPassword.getId()) {
-                checkText(lblPassword, txtPassword);
+                checkPassword(lblPassword, txtPassword);
             } else if (getActivity().getCurrentFocus().getId() == txtConfirmPassword.getId()) {
-                checkText(lblConfirmPassword, txtConfirmPassword);
+                checkPassword(lblConfirmPassword, txtConfirmPassword);
             }
         }
     }
@@ -259,8 +263,8 @@ public class RegisterFragment extends Fragment {
     private void checkAll() {
         checkEmail(lblEmail, txtEmail);
         checkText(lblName, txtName);
-        checkText(lblPassword, txtPassword);
-        checkText(lblConfirmPassword, txtConfirmPassword);
+        checkPassword(lblPassword, txtPassword);
+        checkPassword(lblConfirmPassword, txtConfirmPassword);
     }
 
     private boolean validateAll() {
@@ -271,7 +275,7 @@ public class RegisterFragment extends Fragment {
                 return false;
             }
         }
-        if(!txtPassword.getText().toString().equals(txtConfirmPassword.getText().toString())) { //Contraseñas distintas
+        if (!txtPassword.getText().toString().equals(txtConfirmPassword.getText().toString())) { //Contraseñas distintas
             return false;
         }
         return true;

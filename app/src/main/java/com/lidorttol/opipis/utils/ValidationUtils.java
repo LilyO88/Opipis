@@ -28,6 +28,9 @@ public class ValidationUtils {
         return (yes.isChecked() || no.isChecked());
     }
 
+    public static boolean isValidPassword(String string) {
+        return !TextUtils.isEmpty(string) && (string.length() > 5);
+    }
 
 
 }

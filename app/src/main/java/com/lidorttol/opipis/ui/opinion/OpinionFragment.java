@@ -197,6 +197,13 @@ public class OpinionFragment extends Fragment {
         GestorTextWatcher gestorTextWatcher = new GestorTextWatcher();
 
         txtComment.addTextChangedListener(gestorTextWatcher);
+
+        //Teclado acción
+        txtComment.setOnEditorActionListener((v, actionId, event) -> {
+            KeyboardUtils.hideSoftKeyboard(requireActivity());
+            save();
+            return false;
+        });
     }
 
     private void setRadiobuttonsRestrictions() {

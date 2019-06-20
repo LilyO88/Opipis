@@ -262,6 +262,10 @@ public class EditProfileFragment extends Fragment {
         enabledDisabledField(textView, ValidationUtils.isValidEmail(editText.getText().toString().trim()));
     }
 
+    private void checkPassword(TextView textView, EditText editText) {
+        enabledDisabledField(textView, ValidationUtils.isValidPassword(editText.getText().toString().trim()));
+    }
+
     private void checkCurrentView() {
         if (getActivity().getCurrentFocus() != null) {
             if (getActivity().getCurrentFocus().getId() == txtEmail.getId()) {
@@ -269,7 +273,7 @@ public class EditProfileFragment extends Fragment {
             } else if (getActivity().getCurrentFocus().getId() == txtName.getId()) {
                 checkText(lblName, txtName);
             } else if (getActivity().getCurrentFocus().getId() == txtOldPassword.getId()) {
-                checkText(lblOldPassword, txtOldPassword);
+                checkPassword(lblOldPassword, txtOldPassword);
             }
         }
     }
@@ -277,7 +281,7 @@ public class EditProfileFragment extends Fragment {
     private void checkAll() {
         checkEmail(lblEmail, txtEmail);
         checkText(lblName, txtName);
-        checkText(lblOldPassword, txtOldPassword);
+        checkPassword(lblOldPassword, txtOldPassword);
     }
 
     private boolean validateAll() {

@@ -1,9 +1,11 @@
 package com.lidorttol.opipis.ui.opinionDetail;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -20,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.lidorttol.opipis.R;
 import com.lidorttol.opipis.data.Banio;
@@ -157,10 +161,15 @@ public class OpinionDetailFragment extends Fragment {
 
     private void setupListeners() {
         txtAddOpinion.setOnClickListener(v -> {
-            Bundle arguments = new Bundle();
-            arguments.putString("id_banio", id_banio);
-            arguments.putBoolean("new_bath", false);
-            navController.navigate(R.id.action_detailFragment_to_opinionFragment, arguments);
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if(user != null) {
+                Bundle arguments = new Bundle();
+                arguments.putString("id_banio", id_banio);
+                arguments.putBoolean("new_bath", false);
+                navController.navigate(R.id.action_detailFragment_to_opinionFragment, arguments);
+            } else {
+                showDialog();
+            }
         });
 
         lblLookOpinions .setOnClickListener(v -> {
@@ -168,6 +177,17 @@ public class OpinionDetailFragment extends Fragment {
             arguments.putString("id_banio", id_banio);
             navController.navigate(R.id.action_detailFragment_to_opinionListFragment, arguments);
         });
+    }
+
+    private void showDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+            }
+        }).setTitle("Aviso").setMessage("Debe estar logueado en la aplicación para poder añadir una opinión.");
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
    /* private void setupRecyclerView() {
