@@ -8,7 +8,6 @@
     android:layout_margin="@dimen/margin8dp"
     tools:context=".ui.profile.register.RegisterFragment">
 
-
     <TextView
         android:id="@+id/reg_lblPasswordRep"
         android:layout_width="wrap_content"

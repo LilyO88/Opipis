@@ -5,8 +5,6 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
-import com.lidorttol.opipis.data.Usuario;
-
 public class ForgetFragmentViewModel extends AndroidViewModel {
 
     private boolean stateEmail = true;

@@ -1,6 +1,5 @@
 package com.lidorttol.opipis.ui.opinionList;
 
-
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -22,7 +21,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.lidorttol.opipis.R;
 import com.lidorttol.opipis.data.Banio;
 import com.lidorttol.opipis.data.Opinion;
-import com.lidorttol.opipis.ui.opinionDetail.OpinionDetailFragment;
 
 import java.util.Objects;
 
@@ -39,7 +37,6 @@ public class OpinionListFragment extends Fragment {
     private FirebaseFirestore database;
 
     private String id_banio;
-    private Banio banioParam;
     private OpinionListFragmentAdapter listAdapter;
     private RecyclerView rvOpinions;
     private TextView lblDirection;
@@ -48,7 +45,6 @@ public class OpinionListFragment extends Fragment {
     public OpinionListFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,7 +65,6 @@ public class OpinionListFragment extends Fragment {
 
         database = FirebaseFirestore.getInstance();
 
-        banioParam = new Banio();
         setupViews();
 
         if (id_banio != null) {
@@ -99,7 +94,6 @@ public class OpinionListFragment extends Fragment {
                 });
     }
 
-
     private void observeListOpinions() {
         viewModelOpinionList.getListOpinionsLiveData().observe(getViewLifecycleOwner(), listOpiniones -> {
             listAdapter.submitList(listOpiniones);
@@ -111,7 +105,6 @@ public class OpinionListFragment extends Fragment {
 
         rvOpinions.setHasFixedSize(true);
         rvOpinions.setLayoutManager(new GridLayoutManager(requireContext(), 1));
-        rvOpinions.setNestedScrollingEnabled(false); //!!!!!!!!!!!!!!!!!!!!!!!!!!!
         rvOpinions.setAdapter(listAdapter);
     }
 
@@ -124,7 +117,6 @@ public class OpinionListFragment extends Fragment {
     private void recoverBath(String new_bath) {
         database.collection("banios").document(new_bath)
                 .get().addOnSuccessListener(documentSnapshot -> {
-            banioParam = documentSnapshot.toObject(Banio.class);
             viewModelOpinionList.setBanioParam(documentSnapshot.toObject(Banio.class));
         }).addOnFailureListener(e -> {
         });

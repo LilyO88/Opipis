@@ -1,6 +1,5 @@
 package com.lidorttol.opipis.ui.profile.edit;
 
-
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -23,10 +22,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -35,7 +30,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.lidorttol.opipis.R;
-import com.lidorttol.opipis.data.Usuario;
 import com.lidorttol.opipis.ui.main.MainActivity;
 import com.lidorttol.opipis.utils.KeyboardUtils;
 import com.lidorttol.opipis.utils.ValidationUtils;
@@ -49,7 +43,6 @@ public class EditProfileFragment extends Fragment {
     NavController navController;
     private EditProfileFragmentViewModel viewModelEdit;
     private FirebaseAuth fAuth;
-//    private Usuario currentUser;
     private TextView lblName;
     private EditText txtName;
     private TextView lblEmail;
@@ -102,7 +95,6 @@ public class EditProfileFragment extends Fragment {
 
     private void getCurrentUser() {
         userFirebase = fAuth.getCurrentUser();
-//        currentUser = new Usuario(userFirebase.getUid(), userFirebase.getDisplayName(), userFirebase.getEmail());
     }
 
     private void setupViews() {
@@ -137,97 +129,34 @@ public class EditProfileFragment extends Fragment {
     }
 
     private void setupListeners() {
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (validateAll()) {
-                    doUpdate();
-                } else {
-                    Snackbar.make(cl_edit, "Revise los campos erróneos", Snackbar.LENGTH_LONG).show();
-                }
+        btnSave.setOnClickListener(v -> {
+            if (validateAll()) {
+                doUpdate();
+            } else {
+                Snackbar.make(cl_edit, "Revise los campos erróneos", Snackbar.LENGTH_LONG).show();
             }
         });
     }
 
-    /*private void doUpdate() {
-        AuthCredential credential = EmailAuthProvider.getCredential(txtEmail.getText().toString().trim(), txtOldPassword.getText().toString().trim());
-// Prompt the user to re-provide their sign-in credentials
-        userFirebase.reauthenticate(credential)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) { //Si el re-login es correto se actualiza el usuario de authentication y en la base de datos
-                        Log.d("", "User re-authenticated.");
-                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                .setDisplayName(txtName.getText().toString().trim())  //Nuevo nombre
-                                .build();
-                        userFirebase.updateProfile(profileUpdates)  //Actualización de la base de datos con los nuevos datos
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Log.d("", "User profile updated.");
-                                            database.collection("usuarios").document(userFirebase.getUid())
-                                                    .update("nombre", txtName.getText().toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d("", "DocumentSnapshot successfully updated!");
-                                                }
-                                            }).addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w("", "Error updating document", e);
-                                                }
-                                            });
-                                            Snackbar.make(cl_edit, "Nombre actualizado", Snackbar.LENGTH_LONG).show();
-                                        }
-                                    }
-                                });
-//                        navController.popBackStack();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Snackbar.make(cl_edit, "Contraseña incorrecta", Snackbar.LENGTH_LONG).show();
-            }
-        });
-    }*/
-
     private void doUpdate() {
         AuthCredential credential = EmailAuthProvider.getCredential(txtEmail.getText().toString().trim(), txtOldPassword.getText().toString().trim());
         userFirebase.reauthenticate(credential)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) { //Si el re-login es correto se actualiza el usuario de authentication y en la base de datos
-                        if (task.isSuccessful()) {
-//                            Log.d("", "User re-authenticated.");
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(txtName.getText().toString().trim()).build();
-                            userFirebase.updateProfile(profileUpdates)  //Actualización de la base de datos con los nuevos datos
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("", "User profile updated.");
-                                            database.collection("usuarios").document(userFirebase.getUid())
-                                                    .update("nombre", txtName.getText().toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d("", "DocumentSnapshot successfully updated!");
-                                                }
-                                            }).addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w("", "Error updating document", e);
-                                                }
-                                            });
-//                                                Snackbar.make(cl_login, "Nombre actualizado", Snackbar.LENGTH_LONG).show();
-                                        }
-                                    });
-                            Snackbar.make(cl_edit, "¡Perfil actualizado correctamente!", Snackbar.LENGTH_LONG).show();
-                            navController.popBackStack();
-                        } else {
-//                            ConstraintLayout cl_login = ViewCompat.requireViewById(getView(), R.id.cl_login);
-                            Snackbar.make(cl_edit, "Contraseña incorrecta", Snackbar.LENGTH_LONG).show();
-                        }
+                .addOnCompleteListener(task -> { //Si el re-login es correto se actualiza el usuario de authentication y en la base de datos
+                    if (task.isSuccessful()) {
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(txtName.getText().toString().trim()).build();
+                        userFirebase.updateProfile(profileUpdates)  //Actualización de la base de datos con los nuevos datos
+                                .addOnSuccessListener(aVoid -> {
+                                    Log.d("", "User profile updated.");
+                                    database.collection("usuarios").document(userFirebase.getUid())
+                                            .update("nombre", txtName.getText().toString())
+                                            .addOnSuccessListener(aVoid1 -> Log.d("", "DocumentSnapshot successfully updated!"))
+                                            .addOnFailureListener(e -> Log.w("", "Error updating document", e));
+                                });
+                        Snackbar.make(cl_edit, "¡Perfil actualizado correctamente!", Snackbar.LENGTH_LONG).show();
+                        navController.popBackStack();
+                    } else {
+                        Snackbar.make(cl_edit, "Contraseña incorrecta", Snackbar.LENGTH_LONG).show();
                     }
                 });
     }

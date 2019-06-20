@@ -1,6 +1,5 @@
 package com.lidorttol.opipis.ui.profile.register;
 
-
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -22,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,19 +31,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.lidorttol.opipis.R;
-import com.lidorttol.opipis.data.Usuario;
 import com.lidorttol.opipis.ui.main.MainActivity;
 import com.lidorttol.opipis.utils.KeyboardUtils;
 import com.lidorttol.opipis.utils.ValidationUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -71,7 +64,6 @@ public class RegisterFragment extends Fragment {
     public RegisterFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -136,17 +128,14 @@ public class RegisterFragment extends Fragment {
     }
 
     private void setupListeners() {
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (validateAll()) {
-                    doRegister();
+        btnRegister.setOnClickListener(v -> {
+            if (validateAll()) {
+                doRegister();
+            } else {
+                if (!txtPassword.getText().toString().equals(txtConfirmPassword.getText().toString())) { //Contraseñas distintas
+                    Snackbar.make(cl_register, "Las contraseñas no coinciden", Snackbar.LENGTH_LONG).show();
                 } else {
-                    if (!txtPassword.getText().toString().equals(txtConfirmPassword.getText().toString())) { //Contraseñas distintas
-                        Snackbar.make(cl_register, "Las contraseñas no coinciden", Snackbar.LENGTH_LONG).show();
-                    } else {
-                        Snackbar.make(cl_register, "Revise los campos erróneos", Snackbar.LENGTH_LONG).show();
-                    }
+                    Snackbar.make(cl_register, "Revise los campos erróneos", Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -154,25 +143,22 @@ public class RegisterFragment extends Fragment {
 
     private void doRegister() {
         fAuth.createUserWithEmailAndPassword(txtEmail.getText().toString().trim(), txtPassword.getText().toString().trim())
-                .addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("", "createUserWithEmail:success");
-                            FirebaseUser user = fAuth.getCurrentUser();
-                            //Agregar nombre antes en el usuario
-                            addNameUser(user);
-                            saveUser(user); //Guardar también en la base de datos como usuario
-                            Snackbar.make(cl_register, "¡Perfil creado correctamente!", Snackbar.LENGTH_LONG).show();
-                            navController.popBackStack();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("", "createUserWithEmail:failure", task.getException());
-                            Snackbar.make(cl_register, "No se ha podido crear el usuario", Snackbar.LENGTH_LONG).show();
-                        }
-
+                .addOnCompleteListener(requireActivity(), task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d("", "createUserWithEmail:success");
+                        FirebaseUser user = fAuth.getCurrentUser();
+                        //Agregar nombre antes en el usuario
+                        addNameUser(user);
+                        saveUser(user); //Guardar también en la base de datos como usuario
+                        Snackbar.make(cl_register, "¡Perfil creado correctamente!", Snackbar.LENGTH_LONG).show();
+                        navController.popBackStack();
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w("", "createUserWithEmail:failure", task.getException());
+                        Snackbar.make(cl_register, "No se ha podido crear el usuario", Snackbar.LENGTH_LONG).show();
                     }
+
                 });
     }
 
@@ -181,12 +167,9 @@ public class RegisterFragment extends Fragment {
                 .setDisplayName(txtName.getText().toString().trim())  //Nuevo nombre
                 .build();
         user.updateProfile(profileUpdates)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d("", "User profile updated.");
-                        }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d("", "User profile updated.");
                     }
                 });
     }
@@ -198,17 +181,8 @@ public class RegisterFragment extends Fragment {
         usuario.put("email", txtEmail.getText().toString().trim());
 
         database.collection("usuarios").document(user.getUid()).set(usuario)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("", "DocumentSnapshot successfully written!");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("", "Error writing document", e);
-            }
-        });
+                .addOnSuccessListener(aVoid -> Log.d("", "DocumentSnapshot successfully written!"))
+                .addOnFailureListener(e -> Log.d("", "Error writing document", e));
     }
 
     private void validateFields() {

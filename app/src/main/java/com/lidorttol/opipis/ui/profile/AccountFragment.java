@@ -47,11 +47,6 @@ public class AccountFragment extends Fragment {
         super.onCreate(savedInstanceState);
         fAuth = FirebaseAuth.getInstance();
         navController = NavHostFragment.findNavController(AccountFragment.this);
-/*
-        if (fAuth.getCurrentUser() == null) {
-
-            navController.navigate(R.id.loginFragment);
-        }*/
     }
 
     @Override

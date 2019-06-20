@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -28,7 +27,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.lidorttol.opipis.R;
 import com.lidorttol.opipis.data.Banio;
 import com.lidorttol.opipis.data.Opinion;
-import com.lidorttol.opipis.ui.opinionList.OpinionListFragmentAdapter;
 
 import java.util.List;
 import java.util.Objects;
@@ -43,17 +41,14 @@ public class OpinionDetailFragment extends Fragment {
     private final String ID_BANIO = "id_banio";
 
     private String id_banio;
-//    private OpinionListFragmentAdapter listAdapter;
     private NavController navController;
 
 
-    private Banio banioParam;
     private FirebaseFirestore database;
     private OpinionDetailFragmentViewModel viewModelOpinionDetail;
     private TextView lblTitle;
     private RatingBar ratGlobal;
     private TextView lblNumOpinions;
-//    private List<Opinion> listOpinions;
     private RatingBar ratCleaning;
     private RatingBar ratSize;
     private TextView yesLatch;
@@ -64,7 +59,6 @@ public class OpinionDetailFragment extends Fragment {
     private TextView noDisabled;
     private TextView yesUnisex;
     private TextView noUnisex;
-    private RecyclerView rvOpinions;
     private TextView txtAddOpinion;
     private ImageView imgAddOpinion;
     private TextView lblLookOpinions;
@@ -91,14 +85,11 @@ public class OpinionDetailFragment extends Fragment {
         viewModelOpinionDetail = ViewModelProviders.of(this).get(OpinionDetailFragmentViewModel.class);
         navController = NavHostFragment.findNavController(OpinionDetailFragment.this);
 
-
         Objects.requireNonNull(getArguments());
         id_banio = getArguments().getString(ID_BANIO);
 
         database = FirebaseFirestore.getInstance();
 
-        banioParam = new Banio();
-//        listOpinions = new ArrayList<>();
         setupViews();
 
         if (id_banio != null) {
@@ -124,8 +115,6 @@ public class OpinionDetailFragment extends Fragment {
     }
     private void observeListOpinions() {
         viewModelOpinionDetail.getListOpinionsLiveData().observe(getViewLifecycleOwner(), listOpiniones -> {
-//            listAdapter.submitList(listOpiniones);
-//            listAdapter.notifyDataSetChanged();
             makeAverage(listOpiniones);
         });
     }
@@ -133,11 +122,9 @@ public class OpinionDetailFragment extends Fragment {
 
 
     private void setupViews() {
-        //Cabecera
         lblTitle = ViewCompat.requireViewById(requireView(), R.id.list_lblDirection);
         ratGlobal = ViewCompat.requireViewById(requireView(), R.id.data_ratOpinion);
         lblNumOpinions = ViewCompat.requireViewById(requireView(), R.id.data_lblNumOpinion);
-        //General
         ratCleaning = ViewCompat.requireViewById(requireView(), R.id.data_ratCleaning);
         ratSize = ViewCompat.requireViewById(requireView(), R.id.data_ratSize);
         yesLatch = ViewCompat.requireViewById(requireView(), R.id.data_lblSiLatch);
@@ -148,7 +135,6 @@ public class OpinionDetailFragment extends Fragment {
         noDisabled = ViewCompat.requireViewById(requireView(), R.id.data_lblNoDisabled);
         yesUnisex = ViewCompat.requireViewById(requireView(), R.id.data_lblSiUnisex);
         noUnisex = ViewCompat.requireViewById(requireView(), R.id.data_lblNoUnisex);
-//        rvOpinions = ViewCompat.requireViewById(requireView(), R.id.list_rvOpinions);
 
         lblLookOpinions = ViewCompat.requireViewById(getView(), R.id.op_goOpinions);
 
@@ -156,11 +142,22 @@ public class OpinionDetailFragment extends Fragment {
         imgAddOpinion = ViewCompat.requireViewById(requireView(), R.id.add_imgAddOpinion);
 
         setupListeners();
-//        setupRecyclerView();
     }
 
     private void setupListeners() {
         txtAddOpinion.setOnClickListener(v -> {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if(user != null) {
+                Bundle arguments = new Bundle();
+                arguments.putString("id_banio", id_banio);
+                arguments.putBoolean("new_bath", false);
+                navController.navigate(R.id.action_detailFragment_to_opinionFragment, arguments);
+            } else {
+                showDialog();
+            }
+        });
+
+        imgAddOpinion.setOnClickListener(v -> {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if(user != null) {
                 Bundle arguments = new Bundle();
@@ -182,22 +179,11 @@ public class OpinionDetailFragment extends Fragment {
     private void showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User clicked OK button
-            }
+            public void onClick(DialogInterface dialog, int id) { }
         }).setTitle("Aviso").setMessage("Debe estar logueado en la aplicación para poder añadir una opinión.");
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-   /* private void setupRecyclerView() {
-        listAdapter = new OpinionListFragmentAdapter();
-
-        rvOpinions.setHasFixedSize(true);
-        rvOpinions.setLayoutManager(new GridLayoutManager(requireContext(), 1));
-        rvOpinions.setNestedScrollingEnabled(false); //!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        rvOpinions.setAdapter(listAdapter);
-    }*/
 
     private void makeAverage(List<Opinion> listOpiniones) {
         averageCleaning(listOpiniones);
@@ -274,7 +260,6 @@ public class OpinionDetailFragment extends Fragment {
         ratSize.setRating((float) total);
     }
 
-
     private void averageCleaning(List<Opinion> listOpiniones) {
         double total = 0;
         double cleaning = 0;
@@ -295,7 +280,6 @@ public class OpinionDetailFragment extends Fragment {
         });
     }
 
-
     private void observeBanio() {
         viewModelOpinionDetail.getBanioParam().observe(getViewLifecycleOwner(), banio -> {
             lblTitle.setText(banio.getDireccion());
@@ -306,11 +290,9 @@ public class OpinionDetailFragment extends Fragment {
     private void recoverBath(String new_bath) {
         database.collection("banios").document(new_bath)
                 .get().addOnSuccessListener(documentSnapshot -> {
-            banioParam = documentSnapshot.toObject(Banio.class);
             viewModelOpinionDetail.setBanioParam(documentSnapshot.toObject(Banio.class));
             viewModelOpinionDetail.setGlobalParam(documentSnapshot.toObject(Banio.class).getPuntuacion());
         }).addOnFailureListener(e -> {
         });
     }
-
 }

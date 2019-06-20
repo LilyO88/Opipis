@@ -9,21 +9,4 @@
     android:background="@drawable/fondo3"
     android:id="@+id/ll_drawer_header">
 
-<!--    <ImageView
-        android:id="@+id/img_drawer_header"
-        android:layout_width="@dimen/perfil_image_size"
-        android:layout_height="@dimen/perfil_image_size"
-        android:layout_marginBottom="@dimen/margin_16"
-        android:src="@drawable/ic_school_black_64dp"/>-->
-<!--
-    <TextView
-        android:id="@+id/title_drawer_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/title_drawer_header"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:textSize="40dp"/>-->
-
 </LinearLayout>

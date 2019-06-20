@@ -23,25 +23,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.lidorttol.opipis.R;
 import com.lidorttol.opipis.ui.main.MainActivity;
 import com.lidorttol.opipis.utils.KeyboardUtils;
 import com.lidorttol.opipis.utils.ValidationUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -127,17 +119,14 @@ public class ChangePasswordFragment extends Fragment {
     }
 
     private void setupListeners() {
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (validateAll()) {
-                    doUpdate();
+        btnUpdate.setOnClickListener(v -> {
+            if (validateAll()) {
+                doUpdate();
+            } else {
+                if(!txtNewPassword.getText().toString().equals(txtConfirmPassword.getText().toString())) { //Contraseñas distintas
+                    Snackbar.make(cl_change, "Las contraseñas no coinciden", Snackbar.LENGTH_LONG).show();
                 } else {
-                    if(!txtNewPassword.getText().toString().equals(txtConfirmPassword.getText().toString())) { //Contraseñas distintas
-                        Snackbar.make(cl_change, "Las contraseñas no coinciden", Snackbar.LENGTH_LONG).show();
-                    } else {
-                        Snackbar.make(cl_change, "Revise los campos erróneos", Snackbar.LENGTH_LONG).show();
-                    }
+                    Snackbar.make(cl_change, "Revise los campos erróneos", Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -150,29 +139,23 @@ public class ChangePasswordFragment extends Fragment {
         AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail().trim(), txtOldPassword.getText().toString().trim());
 
         user.reauthenticate(credential)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()) {
-                            Log.d("", "User re-authenticated.");
-                            updatePassword(user);
-                            Snackbar.make(cl_change, "¡Contraseña actualizada correctamente!", Snackbar.LENGTH_LONG).show();
-                            navController.popBackStack();
-                        } else {
-                            Snackbar.make(cl_change, "La contraseña actual no es correcta", Snackbar.LENGTH_LONG).show();
-                        }
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
+                        Log.d("", "User re-authenticated.");
+                        updatePassword(user);
+                        Snackbar.make(cl_change, "¡Contraseña actualizada correctamente!", Snackbar.LENGTH_LONG).show();
+                        navController.popBackStack();
+                    } else {
+                        Snackbar.make(cl_change, "La contraseña actual no es correcta", Snackbar.LENGTH_LONG).show();
                     }
                 });
     }
 
     private void updatePassword(FirebaseUser user) {
         user.updatePassword(txtNewPassword.getText().toString().trim())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d("", "User password updated.");
-                        }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d("", "User password updated.");
                     }
                 });
     }

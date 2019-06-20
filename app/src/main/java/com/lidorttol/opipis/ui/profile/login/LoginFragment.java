@@ -1,13 +1,11 @@
 package com.lidorttol.opipis.ui.profile.login;
 
 
-import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
@@ -27,7 +25,6 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lidorttol.opipis.R;
-import com.lidorttol.opipis.base.YesNoDialogFragment;
 import com.lidorttol.opipis.ui.main.MainActivity;
 import com.lidorttol.opipis.utils.KeyboardUtils;
 import com.lidorttol.opipis.utils.ValidationUtils;
@@ -37,9 +34,6 @@ import com.lidorttol.opipis.utils.ValidationUtils;
  * A simple {@link Fragment} subclass.
  */
 public class LoginFragment extends Fragment {
-
-    private static final String TAG_DIALOG_FRAGMENT = "TAG_DIALOG_FRAGMENT2";
-    private static final int RC_DIALOG_FRAGMENT = 2;
 
     private FirebaseAuth fAuth;
     private EditText txtEmail;
@@ -118,47 +112,16 @@ public class LoginFragment extends Fragment {
                 Snackbar.make(cl_login, "Revise los campos erróneos", Snackbar.LENGTH_LONG).show();
             }
         });
-        lblForget.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navController.navigate(R.id.action_loginFragment_to_forgetFragment);
-            }
-        });
-        lblRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navController.navigate(R.id.action_loginFragment_to_registerFragment);
-            }
-        });
+        lblForget.setOnClickListener(v -> navController.navigate(R.id.action_loginFragment_to_forgetFragment));
+        lblRegister.setOnClickListener(v -> navController.navigate(R.id.action_loginFragment_to_registerFragment));
     }
-
-    /*private void showDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User clicked OK button
-                navController.navigate(R.id.forgetFragment);
-            }
-        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-            }
-        }).setTitle("Confirmación").setMessage("Está ");
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }*/
 
     private void doLogin() {
         fAuth.signInWithEmailAndPassword(txtEmail.getText().toString().trim(), txtPassword.getText().toString().trim())
                 .addOnCompleteListener(requireActivity(), task -> {
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        /*Log.d("", "signInWithEmail:success");
-
-                        FirebaseUser user = fAuth.getCurrentUser();*/
                         navController.popBackStack();
                     } else {
-                        // If sign in fails, display a message to the user.
-//                            Log.w("", "signInWithEmail:failure", task.getException());
                         Snackbar.make(cl_login, task.getException().getMessage(), Snackbar.LENGTH_LONG).show();
                     }
                 });

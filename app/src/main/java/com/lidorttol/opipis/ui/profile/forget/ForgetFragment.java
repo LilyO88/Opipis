@@ -1,6 +1,5 @@
 package com.lidorttol.opipis.ui.profile.forget;
 
-
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -32,8 +31,6 @@ import com.lidorttol.opipis.ui.main.MainActivity;
 import com.lidorttol.opipis.utils.KeyboardUtils;
 import com.lidorttol.opipis.utils.ValidationUtils;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,7 +48,6 @@ public class ForgetFragment extends Fragment {
     public ForgetFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

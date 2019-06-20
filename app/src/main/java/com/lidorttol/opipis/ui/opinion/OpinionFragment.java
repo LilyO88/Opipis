@@ -32,7 +32,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.lidorttol.opipis.R;
 import com.lidorttol.opipis.data.Banio;
-import com.lidorttol.opipis.data.Opinion;
 import com.lidorttol.opipis.utils.KeyboardUtils;
 import com.lidorttol.opipis.utils.ValidationUtils;
 
@@ -42,7 +41,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -85,7 +83,6 @@ public class OpinionFragment extends Fragment {
     private ConstraintLayout cl_opinion;
     private String lastOpinionID;
     private Map<String, Object> new_opinion;
-//    private List<Opinion> listOpinions;
     private boolean isNewBath;
     private boolean cancelClicked;
 
@@ -197,13 +194,6 @@ public class OpinionFragment extends Fragment {
         GestorTextWatcher gestorTextWatcher = new GestorTextWatcher();
 
         txtComment.addTextChangedListener(gestorTextWatcher);
-
-        //Teclado acción
-        txtComment.setOnEditorActionListener((v, actionId, event) -> {
-            KeyboardUtils.hideSoftKeyboard(requireActivity());
-            save();
-            return false;
-        });
     }
 
     private void setRadiobuttonsRestrictions() {
@@ -239,7 +229,6 @@ public class OpinionFragment extends Fragment {
         btnCancel.setOnClickListener(v -> {
             cancelClicked = true;
             navController.popBackStack();
-
         });
         //EditText de DATE
         txtDate.setOnClickListener(v -> showDateDialogPicker(txtDate));
@@ -260,7 +249,6 @@ public class OpinionFragment extends Fragment {
     private void saveOpinion() {
         getLastOpinionID();
         buildNewOpinion();
-        //        database.collection("banios").document(lastID).set(newBath);
         database.collection("opiniones").document(lastOpinionID).set(new_opinion)
                 .addOnSuccessListener(aVoid -> Log.d("", "DocumentSnapshot successfully written!"))
                 .addOnFailureListener(e -> Log.d("", "Error writing document", e));
@@ -332,7 +320,6 @@ public class OpinionFragment extends Fragment {
                         last = Integer.parseInt(document.getId());
                     }
                 }
-//                lastOpinionID = String.valueOf(last + 1);
                     viewModelOpinion.setLastOpinionIdLD(String.valueOf(last + 1));
             } else {
                 Log.d("", "Error getting documents.", task.getException());
@@ -446,7 +433,8 @@ public class OpinionFragment extends Fragment {
         int year = mcurrentDate.get(Calendar.YEAR);
         DatePickerDialog mDatePicker;
 
-        mDatePicker = new DatePickerDialog(requireActivity(), (view, year1, month1, dayOfMonth) -> editText.setText(String.format("%02d/%02d/%d", dayOfMonth, (month1 + 1), year1)), year, month, day);
+        mDatePicker = new DatePickerDialog(requireActivity(), (view, year1, month1, dayOfMonth)
+                -> editText.setText(String.format("%02d/%02d/%d", dayOfMonth, (month1 + 1), year1)), year, month, day);
 
         mDatePicker.getDatePicker().setMaxDate(mcurrentDate.getTimeInMillis()); //Limita la fecha a hoy
         mDatePicker.show();
