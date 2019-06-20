@@ -38,6 +38,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.lidorttol.opipis.R;
 import com.lidorttol.opipis.data.Usuario;
 import com.lidorttol.opipis.ui.main.MainActivity;
+import com.lidorttol.opipis.utils.KeyboardUtils;
 import com.lidorttol.opipis.utils.ValidationUtils;
 
 import java.util.HashMap;
@@ -123,6 +124,13 @@ public class RegisterFragment extends Fragment {
         txtPassword.addTextChangedListener(gestorTextWatcher);
         txtConfirmPassword.addTextChangedListener(gestorTextWatcher);
 
+        //Teclado acción
+        txtConfirmPassword.setOnEditorActionListener((v, actionId, event) -> {
+            KeyboardUtils.hideSoftKeyboard(requireActivity());
+            doRegister();
+            return false;
+        });
+
         setupListeners();
         setFocusListeners();
     }
@@ -133,8 +141,6 @@ public class RegisterFragment extends Fragment {
             public void onClick(View v) {
                 if (validateAll()) {
                     doRegister();
-                    Snackbar.make(cl_register, "¡Perfil creado correctamente!", Snackbar.LENGTH_LONG).show();
-                    navController.popBackStack();
                 } else {
                     if(!txtPassword.getText().toString().equals(txtConfirmPassword.getText().toString())) { //Contraseñas distintas
                         Snackbar.make(cl_register, "Las contraseñas no coinciden", Snackbar.LENGTH_LONG).show();
@@ -166,6 +172,8 @@ public class RegisterFragment extends Fragment {
 
                     }
                 });
+        Snackbar.make(cl_register, "¡Perfil creado correctamente!", Snackbar.LENGTH_LONG).show();
+        navController.popBackStack();
     }
 
     private void addNameUser(FirebaseUser user) {

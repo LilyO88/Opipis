@@ -26,6 +26,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.lidorttol.opipis.R;
@@ -83,7 +85,7 @@ public class OpinionFragment extends Fragment {
     private ConstraintLayout cl_opinion;
     private String lastOpinionID;
     private Map<String, Object> new_opinion;
-    private List<Opinion> listOpinions;
+//    private List<Opinion> listOpinions;
     private boolean isNewBath;
     private boolean cancelClicked;
 
@@ -258,12 +260,14 @@ public class OpinionFragment extends Fragment {
     }
 
     private void buildNewOpinion() {
+        FirebaseAuth fAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = fAuth.getCurrentUser();
         new_opinion = new HashMap<>();
         new_opinion.put("id_banio", bath);
         new_opinion.put("id_opinion", lastOpinionID);
-        //Falta iniciar sesión y recuperar usuario
-        new_opinion.put("usuario", "QKwTmxCMGLfb6n43sCf9SIxkh052");
-        new_opinion.put("comentario", txtComment.getText().toString());
+        new_opinion.put("usuario", user.getDisplayName().trim());
+        new_opinion.put("idUsuario", user.getUid());
+        new_opinion.put("comentario", txtComment.getText().toString().trim());
         new_opinion.put("limpieza", ratCleaning.getRating());
         new_opinion.put("tamanio", ratSize.getRating());
         new_opinion.put("pestillo", defineYesNo(yesLatch, noLatch));
@@ -365,7 +369,7 @@ public class OpinionFragment extends Fragment {
     }
 
     private void checkText(TextView textView, EditText editText) {
-        enabledDisabledField(textView, ValidationUtils.isValidString(editText.getText().toString()));
+        enabledDisabledField(textView, ValidationUtils.isValidString(editText.getText().toString().trim()));
     }
 
     private void checkCurrentView() {

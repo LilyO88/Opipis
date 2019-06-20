@@ -68,6 +68,8 @@
         android:ems="10"
         android:hint="Introduzca email"
         android:inputType="textEmailAddress"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/for_lblEmail" />

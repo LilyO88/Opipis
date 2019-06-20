@@ -7,6 +7,7 @@ public class Opinion {
     private String id_banio;
     private String id_opinion;
     private String usuario;
+    private String idUsuario;
     private String comentario;
     private Date fecha;
     private double global;
@@ -20,12 +21,13 @@ public class Opinion {
     public Opinion() {
     }
 
-    public Opinion(String id_banio, String id_opinion, String usuario, String comentario, Date fecha,
+    public Opinion(String id_banio, String id_opinion, String usuario, String idUsuario, String comentario, Date fecha,
                    double global, double limpieza, double tamanio, boolean pestillo, boolean papel,
                    boolean minusvalido, boolean unisex) {
         this.id_banio = id_banio;
         this.id_opinion = id_opinion;
         this.usuario = usuario;
+        this.idUsuario = idUsuario;
         this.comentario = comentario;
         this.fecha = fecha;
         this.global = global;
@@ -59,6 +61,14 @@ public class Opinion {
 
     public void setUsuario(String usuario) {
         this.usuario = usuario;
+    }
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getComentario() {

@@ -29,6 +29,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lidorttol.opipis.R;
 import com.lidorttol.opipis.ui.main.MainActivity;
+import com.lidorttol.opipis.utils.KeyboardUtils;
 import com.lidorttol.opipis.utils.ValidationUtils;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -88,10 +89,16 @@ public class ForgetFragment extends Fragment {
         GestorTextWatcher gestorTextWatcher = new GestorTextWatcher();
         txtEmail.addTextChangedListener(gestorTextWatcher);
 
+        //Teclado acción
+        txtEmail.setOnEditorActionListener((v, actionId, event) -> {
+            KeyboardUtils.hideSoftKeyboard(requireActivity());
+            getNewPassword();
+            return false;
+        });
+
         btnForget.setOnClickListener(v -> {
             if (validateAll()) {
                 getNewPassword();
-                navController.popBackStack();
             } else {
                 Snackbar.make(cl_forget, "El email introducido no es válido", Snackbar.LENGTH_LONG).show();
             }
@@ -111,11 +118,12 @@ public class ForgetFragment extends Fragment {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d("", "Email sent.");
-                            /*Snackbar.make(cl_forget, "Se ha enviado un email de " +
-                                    "reestablecimiento de contraseña a su correo", Snackbar.LENGTH_LONG).show();*/
+/*                            Snackbar.make(cl_forget, "Se ha enviado un email de " +
+                                    "reestablecimiento de contraseña a su correo", Snackbar.LENGTH_LONG).show();*/  //No funciona
                         }
                     }
                 });
+        navController.popBackStack();
     }
 
     private class GestorTextWatcher implements TextWatcher {

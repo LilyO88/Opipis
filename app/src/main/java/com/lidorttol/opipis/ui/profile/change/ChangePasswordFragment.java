@@ -37,6 +37,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.lidorttol.opipis.R;
 import com.lidorttol.opipis.ui.main.MainActivity;
+import com.lidorttol.opipis.utils.KeyboardUtils;
 import com.lidorttol.opipis.utils.ValidationUtils;
 
 import java.util.HashMap;
@@ -113,6 +114,13 @@ public class ChangePasswordFragment extends Fragment {
         txtOldPassword.addTextChangedListener(gestorTextWatcher);
         txtNewPassword.addTextChangedListener(gestorTextWatcher);
         txtConfirmPassword.addTextChangedListener(gestorTextWatcher);
+
+        //Teclado acción
+        txtConfirmPassword.setOnEditorActionListener((v, actionId, event) -> {
+            KeyboardUtils.hideSoftKeyboard(requireActivity());
+            doUpdate();
+            return false;
+        });
 
         setupListeners();
         setFocusListeners();

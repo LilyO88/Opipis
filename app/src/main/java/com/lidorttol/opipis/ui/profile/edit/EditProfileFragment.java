@@ -37,6 +37,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.lidorttol.opipis.R;
 import com.lidorttol.opipis.data.Usuario;
 import com.lidorttol.opipis.ui.main.MainActivity;
+import com.lidorttol.opipis.utils.KeyboardUtils;
 import com.lidorttol.opipis.utils.ValidationUtils;
 
 
@@ -123,6 +124,13 @@ public class EditProfileFragment extends Fragment {
         txtName.addTextChangedListener(gestorTextWatcher);
         txtEmail.addTextChangedListener(gestorTextWatcher);
         txtOldPassword.addTextChangedListener(gestorTextWatcher);
+
+        //Teclado acción
+        txtOldPassword.setOnEditorActionListener((v, actionId, event) -> {
+            KeyboardUtils.hideSoftKeyboard(requireActivity());
+            doUpdate();
+            return false;
+        });
 
         setupListeners();
         setFocusListeners();

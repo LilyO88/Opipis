@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.lidorttol.opipis.R;
 import com.lidorttol.opipis.base.YesNoDialogFragment;
 import com.lidorttol.opipis.ui.main.MainActivity;
+import com.lidorttol.opipis.utils.KeyboardUtils;
 import com.lidorttol.opipis.utils.ValidationUtils;
 
 
@@ -97,6 +98,13 @@ public class LoginFragment extends Fragment {
 
         txtEmail.addTextChangedListener(gestorTextWatcher);
         txtPassword.addTextChangedListener(gestorTextWatcher);
+
+        //Teclado acción
+        txtPassword.setOnEditorActionListener((v, actionId, event) -> {
+            KeyboardUtils.hideSoftKeyboard(requireActivity());
+            doLogin();
+            return false;
+        });
 
         setupListeners();
         setFocusListeners();
